@@ -3,7 +3,7 @@ import { getErrorData } from "./base";
 export default function useFetcher() {
   const token = useCookie("ag-accessToken",{ maxAge: 60 * 60 * 24 * 7 }).value;
   const config = useRuntimeConfig();
-  const baseUrl = config.public.API_URL;
+  const baseUrl = config.public.API_URL ?? 'https://jsonplaceholder.typicode.com/';
 
   const initialParams = {
     baseURL: baseUrl,

@@ -63,6 +63,7 @@
     padding: 0.75rem 1.25rem;
     position: sticky;
     top: 0;
+    z-index: 1;
 
     &__icon {
         display: flex;

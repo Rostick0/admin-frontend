@@ -1,13 +1,12 @@
 <template>
   <AdminLayout>
     
-</AdminLayout>
+  </AdminLayout>
 </template>
 
 <script setup>
 
 </script>
 
-<style>
-
+<style lang="scss">
 </style>
