@@ -71,7 +71,7 @@ export default (_cols, { resizeCallback }) => {
   };
 
   const restore = async (_cols) => {
-    cols.value = _cols.map((i) => ({ ...i, width: i?.width ?? 100 }));
+    cols.value = _cols.map((i) => ({ ...i, width: i?.width ?? 'auto' }));
   };
 
   onMounted(async () => {

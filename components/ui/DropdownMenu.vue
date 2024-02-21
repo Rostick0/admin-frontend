@@ -1,11 +1,11 @@
 <template>
   <div class="dropdown" tabindex="-1" @focusout="onFocusout" ref="wrapper">
-    <div @click="toggle" class="dropdown-menu-button" style="padding: 5px 10px">
+    <div @click="toggle" class="dropdown-menu-button">
       <slot name="body" />
     </div>
     <div
-      v-if="wrapper && isOpened"
       class="dropdown-menu"
+      v-if="wrapper && isOpened"
       :style="`top:${
         wrapper?.getBoundingClientRect()?.top + wrapper.clientHeight
       }px;
@@ -34,7 +34,7 @@ const toggle = () => {
 .dropdown {
   &-menu {
     position: absolute;
-    z-index: 100;
+    z-index: 102;
     width: 200px;
 
     &-button {

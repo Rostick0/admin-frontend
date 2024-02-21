@@ -4,14 +4,13 @@
       <UiStack justify-content="space-between" align-items="center">
         {{ title }}
         <UiStack gap="4" align-items="center">
-          <UiDropdownMenu :is-show="false">
+          <UiDropdownMenu class="table-column" :is-show="false">
             <template #drop>
               <!-- rgb(var(--white-color)) -->
               <UiStack
+                class="table-column-dropdown"
                 flex-direction="column"
-                background="rgb(var(--color-white))"
                 justify-content="space-between"
-                background-color="green"
               >
                 <div
                   v-for="col in cols
@@ -28,7 +27,7 @@
               </UiStack>
             </template>
             <template #body>
-              <div class="p-4" style="width: 300px">Выбрать колонки</div>
+              <div class="table-column-select">Выбрать колонки</div>
             </template>
           </UiDropdownMenu>
         </UiStack>
@@ -269,18 +268,16 @@
 
     <template #footer>
       <slot name="footer">
-        <UiCol col="6">
+        <UiRow class="table-count" justify-content="space-between">
+          <div class="table-count__amount">
+            Итого записей: {{ meta?.total ?? 0 }}
+          </div>
           <BasePagination
             :total="meta?.total"
             :limit="meta?.per_page"
             v-if="filterForm"
             v-model:current-page="filterForm.page"
           />
-        </UiCol>
-        <UiRow class="table-count" justify-content="space-between">
-          <div class="table-count__amount">
-            Итого записей: {{ meta?.total ?? 0 }}
-          </div>
           <UiSelect
             class=""
             hideMessage
@@ -371,16 +368,14 @@ const getValueByName = (item, name) => {
 
 <style lang="scss" scoped>
 .reziser-wrapper {
-  position: absolute;
-  height: 100%;
-
+  cursor: col-resize;
   padding: 0 10px;
+  position: absolute;
   margin-right: -10px;
   top: 0;
   right: 0;
-  cursor: col-resize;
-
-  z-index: 10000;
+  height: 100%;
+  z-index: 100;
 
   &:hover {
     .resizer {
@@ -392,17 +387,41 @@ const getValueByName = (item, name) => {
 }
 
 .resizer {
-  height: 100%;
-  width: 3px;
+  background: rgba(49, 80, 183, 0.03);
+  color: white;
   user-select: none;
   // margin-right: -10px;
-  color: white;
-  background: rgba(49, 80, 183, 0.03);
+  height: 100%;
+  width: 3px;
 }
 
 .table {
+  &-column {
+    z-index: 103;
+
+    &-dropdown {
+      background-color: rgb(var(--color-white));
+      border-radius: 0.33rem;
+      padding: 0 0.75rem;
+      transform: translateY(0.75rem);
+    }
+
+    .control__checkbox {
+      padding: 0.75rem;
+    }
+
+    &-select {
+      background-color: rgb(var(--color-white));
+      border-radius: 0.33rem;
+      padding: 0.75rem 1.25rem;
+      margin-bottom: 0.75rem;
+    }
+  }
+
   &__block {
     border-collapse: collapse;
+    border-radius: 0.33rem;
+    overflow: hidden;
     caption-side: bottom;
     text-align: left;
 
@@ -419,17 +438,15 @@ const getValueByName = (item, name) => {
       text-wrap: pretty;
       word-wrap: break-word;
       background-color: transparent;
-      border-bottom: 1px solid #e7eaf0;
+      border-bottom: 1px solid rgb(var(--color-pre-white));
       font-size: 0.8125rem;
     }
   }
 
   &-count {
-    margin-top: 1rem;
-
     &__amount {
       background-color: rgb(var(--color-white));
-      border-radius: 0.25rem;
+      border-radius: 0.33rem;
       display: flex;
       align-items: center;
       padding: 0.75rem 1.25rem;

@@ -17,7 +17,7 @@
       (backgroundColor ? ' stack-bg-' + backgroundColor : '') +
       (flexWrap ? ' stack-wrap-' + flexWrap : '')
     "
-    :style="{ background: background ?? 'transparent' }"
+    :style="{ background: background ?? '' }"
   >
     <slot />
   </div>

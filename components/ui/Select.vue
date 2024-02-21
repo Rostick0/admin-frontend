@@ -181,7 +181,7 @@ const handleScroll = (event) => {
   }
   .select__value {
     background-color: rgb(var(--color-white));
-    border-radius: 0.25rem;
+    border-radius: 0.33rem;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -193,6 +193,7 @@ const handleScroll = (event) => {
 
     &:hover {
       background-color: rgb(var(--color-grey-light));
+      // color: rgb(var(--color-white));
     }
     &.selected {
       background-color: rgb(var(--color-blue-light));
@@ -202,8 +203,8 @@ const handleScroll = (event) => {
 
   .select__options {
     background-color: rgb(var(--color-white));
-    border-radius: 0.375rem;
-    border: 1px solid #e7eaf0;
+    border-radius: 0.33rem;
+    border: 1px solid rgb(var(--color-pre-white));
     box-shadow: 0 1px 2px rgba(50, 50, 71, 0.08);
     position: absolute;
     top: 108%;
@@ -220,7 +221,8 @@ const handleScroll = (event) => {
       background-repeat: no-repeat;
       background-position: right 1.25rem center;
       background-size: 1rem .75rem;
-      border-bottom: 1px solid #e7eaf0;
+      // rgb(var(--color-pre-white))
+      border-bottom: 1px solid rgb(var(--color-pre-white));
       display: block;
       font-size: 1rem;
       font-weight: 400;

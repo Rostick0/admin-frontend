@@ -1,16 +1,16 @@
 <template>
   <AdminLayout>
-    <Table :data="data" :cols="cols" :meta="meta" :filterForm="filterForm"></Table>
+    <Table :data="computedData" :cols="cols" :meta="meta" :filterForm="filterForm"></Table>
     <!-- <pre>
-      {{ data?.[0] }}
+      {{ data?.[1] }}
     </pre> -->
   </AdminLayout>
 </template>
 
 <script setup>
-// const 
 const { filterForm, filters } = useFilters({
-  page: 1
+  page: 1,
+  limit: 20,
 });
 
 const { data, meta, get } = await useApi({
@@ -22,9 +22,8 @@ const { data, meta, get } = await useApi({
   init: false,
 });
 
-await get();
-onMounted(() => {
-  data.value = data.value?.map(({ count, ...item }) => ({
+const computedData = computed(() => {
+  return data.value?.map(({ count, ...item }) => ({
     ...item,
     count: item?.is_infinitely ? "ထ" : count,
   }));

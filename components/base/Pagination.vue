@@ -168,7 +168,7 @@ watch(
 
   &__num {
     background: rgb(var(--color-white));
-    border-radius: 0.25rem;
+    border-radius: 0.33rem;
     cursor: pointer;
     display: flex;
     align-items: center;
