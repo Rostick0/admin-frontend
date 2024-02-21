@@ -7,7 +7,12 @@
           <UiDropdownMenu :is-show="false">
             <template #drop>
               <!-- rgb(var(--white-color)) -->
-              <UiStack flex-direction="column" background="rgb(var(--color-white))" justify-content="space-between" background-color="green">
+              <UiStack
+                flex-direction="column"
+                background="rgb(var(--color-white))"
+                justify-content="space-between"
+                background-color="green"
+              >
                 <div
                   v-for="col in cols
                     .filter((a) => a.name != 'actions')
@@ -64,13 +69,7 @@
                     "
                   />
 
-                  <template
-                    v-if="
-                      col.name.split('.').length <= 1 &&
-                      !col?.can_not_sort &&
-                      col.name != 'actions'
-                    "
-                  >
+                  <template v-if="!col?.can_not_sort && col.name != 'actions'">
                     <div
                       class="d-flex align-items-center"
                       style="cursor: pointer"
@@ -113,7 +112,7 @@
                       </button>
                     </div>
                   </template>
-                  <div v-else>{{ col.title }}</div>
+                  <div v-else>{{ col.title }} 1</div>
                   <!-- <button style="position: absolute;top: -32px;right: 0; font-size: 25px;"
                                         @click="changeOrder(col.id, +1)">
                                         &#8594;
@@ -270,41 +269,39 @@
 
     <template #footer>
       <slot name="footer">
-        <UiRow justify-content="space-between" align-items="center">
-          <UiCol col="3">
-            <div>Итого записей: {{ meta?.total ?? 0 }}</div>
-          </UiCol>
-          <UiCol col="6">
-            <BasePagination
-              :total="meta?.total"
-              :limit="meta?.per_page"
-              v-if="filterForm"
-              v-model:current-page="filterForm.page"
-            />
-          </UiCol>
-          <UiCol col="3">
-            <UiSelect
-              hideMessage
-              style="margin-left: auto; width: 100%"
-              v-if="filterForm"
-              v-model="filterForm.limit"
-              model-value-is-number
-              :options="[
-                {
-                  id: 20,
-                  value: 20,
-                },
-                {
-                  id: 50,
-                  value: 50,
-                },
-                {
-                  id: 100,
-                  value: 100,
-                },
-              ]"
-            />
-          </UiCol>
+        <UiCol col="6">
+          <BasePagination
+            :total="meta?.total"
+            :limit="meta?.per_page"
+            v-if="filterForm"
+            v-model:current-page="filterForm.page"
+          />
+        </UiCol>
+        <UiRow class="table-count" justify-content="space-between">
+          <div class="table-count__amount">
+            Итого записей: {{ meta?.total ?? 0 }}
+          </div>
+          <UiSelect
+            class=""
+            hideMessage
+            v-if="filterForm"
+            v-model="filterForm.limit"
+            model-value-is-number
+            :options="[
+              {
+                id: 20,
+                value: 20,
+              },
+              {
+                id: 50,
+                value: 50,
+              },
+              {
+                id: 100,
+                value: 100,
+              },
+            ]"
+          />
         </UiRow>
       </slot>
     </template>
@@ -330,16 +327,19 @@ watch(
   }
 );
 
-const { cols, restore, mouseDownHandler, mouseDownAuto } = useDynamicTh(props.cols, {
-  resizeCallback: async (colId, val) => {
-    // try {
-    //     console.log(colId, val);
-    //     // props.debounceUpdateCol(colId, val)
-    // } catch (error) {
-    //     console.error(error);
-    // }
-  },
-});
+const { cols, restore, mouseDownHandler, mouseDownAuto } = useDynamicTh(
+  props.cols,
+  {
+    resizeCallback: async (colId, val) => {
+      // try {
+      //     console.log(colId, val);
+      //     // props.debounceUpdateCol(colId, val)
+      // } catch (error) {
+      //     console.error(error);
+      // }
+    },
+  }
+);
 
 const changeSort = (sort) => {
   props.filterForm.sort = sort;
@@ -381,6 +381,14 @@ const getValueByName = (item, name) => {
   cursor: col-resize;
 
   z-index: 10000;
+
+  &:hover {
+    .resizer {
+      background: rgba(49, 81, 183, 0.216);
+      // height: 100%;
+      cursor: col-resize;
+    }
+  }
 }
 
 .resizer {
@@ -392,37 +400,42 @@ const getValueByName = (item, name) => {
   background: rgba(49, 80, 183, 0.03);
 }
 
-.reziser-wrapper:hover {
-  .resizer {
-    background: rgba(49, 81, 183, 0.216);
-    // height: 100%;
-    cursor: col-resize;
+.table {
+  &__block {
+    border-collapse: collapse;
+    caption-side: bottom;
+    text-align: left;
+
+    tr {
+      background-color: rgb(var(--color-white));
+    }
+
+    th,
+    td {
+      padding: 0.8rem 1.5rem;
+    }
+
+    td {
+      text-wrap: pretty;
+      word-wrap: break-word;
+      background-color: transparent;
+      border-bottom: 1px solid #e7eaf0;
+      font-size: 0.8125rem;
+    }
+  }
+
+  &-count {
+    margin-top: 1rem;
+
+    &__amount {
+      background-color: rgb(var(--color-white));
+      border-radius: 0.25rem;
+      display: flex;
+      align-items: center;
+      padding: 0.75rem 1.25rem;
+    }
   }
 }
-
-.table__block {
-  border-collapse: collapse;
-  caption-side: bottom;
-  text-align: left;
-
-  tr {
-    background-color: rgb(var(--color-white));
-  }
-
-  th,
-  td {
-    padding: 0.8rem 1.5rem;
-  }
-
-  td {
-    text-wrap: pretty;
-    word-wrap: break-word;
-    background-color: transparent;
-    border-bottom: 1px solid #e7eaf0;
-    font-size: 0.8125rem;
-  }
-}
-
 .resizable {
   background: #f5f9fc;
   border-bottom: 1px solid #eee;
@@ -445,44 +458,36 @@ const getValueByName = (item, name) => {
 }
 
 .table-sort-btn {
-  height: 12px;
-  width: 15px;
-  padding: 20px;
-  display: flex;
+  background-image: url("assets/img/table-sort.svg");
+  background-repeat: no-repeat;
+  background-position: right center;
+  cursor: pointer;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
   margin: -16px -20px;
-  background-image: url("assets/img/table-sort.svg");
-}
-
-.table-sort-btn_bottom {
-  height: 12px;
-  background-image: url("assets/img/table-sort-bottom.svg");
-}
-
-.table-sort-btn_top {
-  width: 15px;
-  background-image: url("assets/img/table-sort-top.svg");
-}
-
-.table-sort-btn {
-  display: inline-flex;
-  align-items: center;
-  cursor: pointer;
-  background-repeat: no-repeat;
-  background-position: right center;
+  padding: 20px;
   padding-right: 12px;
-}
+  height: 12px;
+  width: 15px;
 
-.table-sort-btn__text {
-  font-family: "Inter";
-  font-style: normal;
-  font-weight: 600;
-  font-size: 11px;
-  line-height: 13px;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: #545e7d;
-  white-space: nowrap;
+  &_bottom {
+    height: 12px;
+    background-image: url("assets/img/table-sort-bottom.svg");
+  }
+
+  &_top {
+    width: 15px;
+    background-image: url("assets/img/table-sort-top.svg");
+  }
+
+  &__text {
+    font-size: 0.65rem;
+    font-weight: 600;
+    line-height: 1.1;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
 }
 </style>

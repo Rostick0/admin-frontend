@@ -1,0 +1,126 @@
+.row {
+  display: flex;
+  box-sizing: border-box;
+  flex-wrap: wrap;
+  &.row-align-items-center {
+    align-items: center;
+  }
+  .col {
+    &.col-1 {
+      flex: 0 0 auto;
+      width: calc(100% * (1 / 12));
+    }
+    &.col-2 {
+      flex: 0 0 auto;
+      width: calc(100% * (2 / 12));
+    }
+    &.col-3 {
+      flex: 0 0 auto;
+      width: calc(100% * (3 / 12));
+    }
+    &.col-4 {
+      flex: 0 0 auto;
+      width: calc(100% * (4 / 12));
+    }
+    &.col-5 {
+      flex: 0 0 auto;
+      width: calc(100% * (5 / 12));
+    }
+    &.col-6 {
+      flex: 0 0 auto;
+      width: calc(100% * (6 / 12));
+    }
+    &.col-7 {
+      flex: 0 0 auto;
+      width: calc(100% * (7 / 12));
+    }
+    &.col-8 {
+      flex: 0 0 auto;
+      width: calc(100% * (8 / 12));
+    }
+    &.col-9 {
+      flex: 0 0 auto;
+      width: calc(100% * (9 / 12));
+    }
+    &.col-10 {
+      flex: 0 0 auto;
+      width: calc(100% * (10 / 12));
+    }
+    &.col-11 {
+      flex: 0 0 auto;
+      width: calc(100% * (11 / 12));
+    }
+    &.col-12 {
+      flex: 0 0 auto;
+      width: calc(100% * (12 / 12));
+    }
+  }
+  &.gap-1 {
+    margin: -5px;
+    .col {
+      padding: 5px;
+    }
+  }
+  &.gap-2 {
+    margin: -10px;
+    .col {
+      padding: 10px;
+    }
+  }
+  &.gap-3 {
+    margin: -15px;
+    .col {
+      padding: 15px;
+    }
+  }
+  &.gap-4 {
+    margin: -20px;
+    .col {
+      padding: 20px;
+    }
+  }
+  &.gap-5 {
+    margin: -25px;
+    .col {
+      padding: 25px;
+    }
+  }
+  &.gap-6 {
+    margin: -30px;
+    .col {
+      padding: 30px;
+    }
+  }
+  &.gap-y-0 {
+  }
+  &.gap-y-1 {
+    row-gap: 5px;
+  }
+  &.gap-y-2 {
+    row-gap: 10px;
+  }
+  &.gap-y-3 {
+    row-gap: 15px;
+  }
+  &.gap-y-4 {
+    row-gap: 30px;
+  }
+
+  &.justify-content {
+    &-start {
+      justify-content: start;
+    }
+    &-end {
+      justify-content: end;
+    }
+    &-center {
+      justify-content: center;
+    }
+    &-space-between {
+      justify-content: space-between;
+    }
+    &-space-around {
+      justify-content: space-around;
+    }
+  }
+}

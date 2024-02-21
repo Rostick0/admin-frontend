@@ -1,7 +1,7 @@
-import todos from "./todos";
+import products from "./products";
 
 const api = {
-    todos
+    products
 };
 
 export default api;

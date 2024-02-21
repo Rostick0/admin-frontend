@@ -15,5 +15,9 @@
 <script setup lang="ts"></script>
 
 <style lang="scss" scoped>
-
+.table {
+  &__footer {
+    margin-top: 2rem;
+  }
+}
 </style>
