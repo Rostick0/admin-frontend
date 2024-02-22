@@ -21,7 +21,6 @@ export default (_cols, { resizeCallback }) => {
         return;
       }
       const width = col.mouseDownWidth + (e.clientX - mouseDownPos.value);
-      console.log(col.mouseDownWidth, e.clientX, mouseDownPos.value);
       if (
         width > 80 && width <= 750
         // && cols.value.reduce((acc, i) => i.width + acc, -col.width) + width < 1400

@@ -1,6 +1,7 @@
 <template>
   <AdminLayout>
     <Table
+      title="Производители"
       :data="computedData"
       :cols="cols"
       :meta="meta"

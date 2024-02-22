@@ -1,8 +1,12 @@
 <template>
-  <UiTable v-if="cols?.length">
+  <UiTable class="table" v-if="cols?.length">
     <template #header>
-      <UiStack justify-content="space-between" align-items="center">
-        {{ title }}
+      <UiStack
+        class="table-header"
+        justify-content="space-between"
+        align-items="center"
+      >
+        <div class="table-title">{{ title }}</div>
         <UiStack gap="4" align-items="center">
           <UiDropdownMenu class="table-column" :is-show="false">
             <template #drop>
@@ -33,34 +37,134 @@
         </UiStack>
       </UiStack>
     </template>
+
     <template #table v-if="!loading && data?.length">
-      <table class="table__block">
-        <thead>
-          <tr>
-            <template
-              v-for="col in cols.sort((a, b) => a.order - b.order)"
-              :key="col.id"
-              :id="col.field"
-            >
-              <th
-                v-if="!col.is_hidden"
-                :style="[
-                  {
-                    minWidth: `${col.width ? col.width + 'px' : 'auto'}`,
-                  },
-                  {
-                    width: `${col.width ? col.width + 'px' : 'auto'}`,
-                  },
-                ]"
-                class="resizable"
+      <div class="table-body">
+        <table class="table__block">
+          <thead>
+            <tr>
+              <template
+                v-for="col in cols.sort((a, b) => a.order - b.order)"
+                :key="col.id"
+                :id="col.field"
               >
+                <th
+                  v-if="!col.is_hidden"
+                  :style="[
+                    {
+                      minWidth: `${col.width ? col.width + 'px' : 'auto'}`,
+                    },
+                    {
+                      width: `${col.width ? col.width + 'px' : 'auto'}`,
+                    },
+                  ]"
+                  class="resizable"
+                >
+                  <UiStack gap="1">
+                    <div class="resize-invisible"></div>
+
+                    <template
+                      v-if="!col?.can_not_sort && col.name != 'actions'"
+                    >
+                      <div
+                        class="d-flex align-items-center"
+                        style="cursor: pointer"
+                        v-if="
+                          filterForm?.sort == col.name &&
+                          filterForm?.sort &&
+                          filterForm?.sort[0] != '-'
+                        "
+                        @click="changeSort?.('-' + col.name)"
+                      >
+                        {{ col.title }}
+                        <button>
+                          <div
+                            class="table-sort-btn table-sort-btn_bottom"
+                          ></div>
+                        </button>
+                      </div>
+                      <div
+                        class="d-flex align-items-center"
+                        style="cursor: pointer"
+                        v-else-if="
+                          filterForm?.sort?.slice?.(1) == col.name &&
+                          filterForm?.sort &&
+                          filterForm?.sort[0] == '-'
+                        "
+                        @click="changeSort?.('')"
+                      >
+                        {{ col.title }}
+                        <button>
+                          <div class="table-sort-btn table-sort-btn_top"></div>
+                        </button>
+                      </div>
+                      <div
+                        class="d-flex align-items-center"
+                        style="cursor: pointer"
+                        v-else
+                        @click="changeSort?.(col.name)"
+                      >
+                        {{ col.title }}
+                        <button>
+                          <div class="table-sort-btn"></div>
+                        </button>
+                      </div>
+                    </template>
+                    <div v-else>{{ col.title }} 1</div>
+                    <!-- <button style="position: absolute;top: -32px;right: 0; font-size: 25px;"
+                                        @click="changeOrder(col.id, +1)">
+                                        &#8594;
+                                    </button> -->
+                    <div
+                      class="reziser-wrapper"
+                      v-if="col?.resizable"
+                      @mousedown="mouseDownHandler($event, col)"
+                      @dblclick="mouseDownAuto($event, col)"
+                    >
+                      <div class="resizer"></div>
+                    </div>
+                  </UiStack>
+                </th>
+              </template>
+              <!-- <th></th> -->
+              <!-- <th style="width: 1px;overflow: hidden;padding: 0;"></th> -->
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr v-for="item in data" :key="item.id">
+              <template v-for="col in cols" :key="col.name">
+                <td v-if="!col.is_hidden">
+                  <component
+                    v-if="col.renderComponent"
+                    :is="col?.renderComponent?.(item)"
+                    :id="item.id"
+                  />
+                  <template v-else-if="col?.convertTo">{{
+                    col.convertTo(getValueByName(item, col.name))
+                  }}</template>
+                  <template v-else>{{
+                    getValueByName(item, col.name)
+                  }}</template>
+                </td>
+              </template>
+              <!-- <td></td> -->
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </template>
+    <template #table v-else-if="loading">
+      <div class="table-body">
+        <table class="table__block">
+          <thead>
+            <tr>
+              <th v-for="col in cols">
                 <UiStack gap="1">
-                  <div class="resize-invisible"></div>
+                  <div>{{ col.title }}</div>
 
                   <template v-if="!col?.can_not_sort && col.name != 'actions'">
-                    <div
-                      class="d-flex align-items-center"
-                      style="cursor: pointer"
+                    <button
                       v-if="
                         filterForm?.sort == col.name &&
                         filterForm?.sort &&
@@ -68,14 +172,9 @@
                       "
                       @click="changeSort?.('-' + col.name)"
                     >
-                      {{ col.title }}
-                      <button>
-                        <div class="table-sort-btn table-sort-btn_bottom"></div>
-                      </button>
-                    </div>
-                    <div
-                      class="d-flex align-items-center"
-                      style="cursor: pointer"
+                      <div class="table-sort-btn table-sort-btn_bottom"></div>
+                    </button>
+                    <button
                       v-else-if="
                         filterForm?.sort?.slice?.(1) == col.name &&
                         filterForm?.sort &&
@@ -83,165 +182,83 @@
                       "
                       @click="changeSort?.('')"
                     >
-                      {{ col.title }}
-                      <button>
-                        <div class="table-sort-btn table-sort-btn_top"></div>
-                      </button>
-                    </div>
-                    <div
-                      class="d-flex align-items-center"
-                      style="cursor: pointer"
-                      v-else
-                      @click="changeSort?.(col.name)"
-                    >
-                      {{ col.title }}
-                      <button>
-                        <div class="table-sort-btn"></div>
-                      </button>
-                    </div>
+                      <div class="table-sort-btn table-sort-btn_top"></div>
+                    </button>
                   </template>
-                  <div v-else>{{ col.title }} 1</div>
-                  <!-- <button style="position: absolute;top: -32px;right: 0; font-size: 25px;"
-                                        @click="changeOrder(col.id, +1)">
-                                        &#8594;
-                                    </button> -->
                   <div
                     class="reziser-wrapper"
-                    v-if="col?.resizable"
                     @mousedown="mouseDownHandler($event, col)"
                     @dblclick="mouseDownAuto($event, col)"
                   >
-                    <div class="resizer"></div>
+                    <div v-if="col?.resizable" class="resizer"></div>
                   </div>
                 </UiStack>
               </th>
-            </template>
-            <!-- <th></th> -->
-            <!-- <th style="width: 1px;overflow: hidden;padding: 0;"></th> -->
-          </tr>
-        </thead>
+            </tr>
+          </thead>
 
-        <tbody>
-          <tr v-for="item in data" :key="item.id">
-            <template v-for="col in cols" :key="col.name">
-              <td v-if="!col.is_hidden">
-                <component
-                  v-if="col.renderComponent"
-                  :is="col?.renderComponent?.(item)"
-                  :id="item.id"
-                />
-                <template v-else-if="col?.convertTo">{{
-                  col.convertTo(getValueByName(item, col.name))
-                }}</template>
-                <template v-else>{{ getValueByName(item, col.name) }}</template>
+          <tbody>
+            <tr>
+              <td v-for="col in cols" :key="col.name">
+                <component v-if="col.template" :is="col.template" />
               </td>
-            </template>
-            <!-- <td></td> -->
-          </tr>
-        </tbody>
-      </table>
-    </template>
-    <template #table v-else-if="loading">
-      <table class="table__block">
-        <thead>
-          <tr>
-            <th v-for="col in cols">
-              <UiStack gap="1">
-                <div>{{ col.title }}</div>
-
-                <template v-if="!col?.can_not_sort && col.name != 'actions'">
-                  <button
-                    v-if="
-                      filterForm?.sort == col.name &&
-                      filterForm?.sort &&
-                      filterForm?.sort[0] != '-'
-                    "
-                    @click="changeSort?.('-' + col.name)"
-                  >
-                    <div class="table-sort-btn table-sort-btn_bottom"></div>
-                  </button>
-                  <button
-                    v-else-if="
-                      filterForm?.sort?.slice?.(1) == col.name &&
-                      filterForm?.sort &&
-                      filterForm?.sort[0] == '-'
-                    "
-                    @click="changeSort?.('')"
-                  >
-                    <div class="table-sort-btn table-sort-btn_top"></div>
-                  </button>
-                </template>
-                <div
-                  class="reziser-wrapper"
-                  @mousedown="mouseDownHandler($event, col)"
-                  @dblclick="mouseDownAuto($event, col)"
-                >
-                  <div v-if="col?.resizable" class="resizer"></div>
-                </div>
-              </UiStack>
-            </th>
-          </tr>
-        </thead>
-
-        <tbody>
-          <tr>
-            <td v-for="col in cols" :key="col.name">
-              <component v-if="col.template" :is="col.template" />
-            </td>
-          </tr>
-        </tbody>
-      </table>
-      <UiLoader />
+            </tr>
+          </tbody>
+        </table>
+        <UiLoader />
+      </div>
     </template>
     <template #table v-else>
-      <table class="table__block">
-        <thead>
-          <tr>
-            <th v-for="col in cols">
-              <UiStack gap="1">
-                <div>{{ col.title }}</div>
-                <template v-if="!col?.can_not_sort && col.name != 'actions'">
-                  <button
-                    v-if="
-                      filterForm?.sort == col.name &&
-                      filterForm?.sort &&
-                      filterForm?.sort[0] != '-'
-                    "
-                    @click="changeSort?.('-' + col.name)"
+      <div class="table-body">
+        <table class="table__block">
+          <thead>
+            <tr>
+              <th v-for="col in cols">
+                <UiStack gap="1">
+                  <div>{{ col.title }}</div>
+                  <template v-if="!col?.can_not_sort && col.name != 'actions'">
+                    <button
+                      v-if="
+                        filterForm?.sort == col.name &&
+                        filterForm?.sort &&
+                        filterForm?.sort[0] != '-'
+                      "
+                      @click="changeSort?.('-' + col.name)"
+                    >
+                      <div class="table-sort-btn table-sort-btn_bottom"></div>
+                    </button>
+                    <button
+                      v-else-if="
+                        filterForm?.sort?.slice?.(1) == col.name &&
+                        filterForm?.sort &&
+                        filterForm?.sort[0] == '-'
+                      "
+                      @click="changeSort?.('')"
+                    >
+                      <div class="table-sort-btn table-sort-btn_top"></div>
+                    </button>
+                    <button v-else @click="changeSort?.(col.name)">
+                      <div class="table-sort-btn"></div>
+                    </button>
+                  </template>
+                  <div
+                    class="reziser-wrapper"
+                    @mousedown="mouseDownHandler($event, col)"
+                    @dblclick="mouseDownAuto($event, col)"
                   >
-                    <div class="table-sort-btn table-sort-btn_bottom"></div>
-                  </button>
-                  <button
-                    v-else-if="
-                      filterForm?.sort?.slice?.(1) == col.name &&
-                      filterForm?.sort &&
-                      filterForm?.sort[0] == '-'
-                    "
-                    @click="changeSort?.('')"
-                  >
-                    <div class="table-sort-btn table-sort-btn_top"></div>
-                  </button>
-                  <button v-else @click="changeSort?.(col.name)">
-                    <div class="table-sort-btn"></div>
-                  </button>
-                </template>
-                <div
-                  class="reziser-wrapper"
-                  @mousedown="mouseDownHandler($event, col)"
-                  @dblclick="mouseDownAuto($event, col)"
-                >
-                  <div v-if="col?.resizable" class="resizer"></div>
-                </div>
-              </UiStack>
-            </th>
-          </tr>
-        </thead>
-      </table>
-      <UiStack align-items="center" padding="2" margin-x="5">
-        <UiTypography font-size="3" font-weight="medium">
-          Ничего не найдено
-        </UiTypography>
-      </UiStack>
+                    <div v-if="col?.resizable" class="resizer"></div>
+                  </div>
+                </UiStack>
+              </th>
+            </tr>
+          </thead>
+        </table>
+        <UiStack align-items="center" padding="2" margin-x="5">
+          <UiTypography font-size="3" font-weight="medium">
+            Ничего не найдено
+          </UiTypography>
+        </UiStack>
+      </div>
     </template>
 
     <template #footer>
@@ -357,11 +374,11 @@ const getValueByName = (item, name) => {
   z-index: 100;
 
   // &:hover {
-    .resizer {
-      background-color: rgb(var(--color-white), 0.75);
-      // height: 100%;
-      cursor: col-resize;
-    }
+  .resizer {
+    background-color: rgb(var(--color-white), 0.75);
+    // height: 100%;
+    cursor: col-resize;
+  }
   // }
 }
 
@@ -384,10 +401,27 @@ const getValueByName = (item, name) => {
   transition: 0.3s;
   // margin-right: -10px;
   height: 100%;
-  width: 3px;
+  width: 4px;
 }
 
 .table {
+  background-color: rgb(var(--color-white));
+  border-radius: 0.33rem;
+
+  &-title {
+    font-weight: 700;
+  }
+
+  &-header {
+    border-bottom: 2px solid rgb(var(--color-pre-white));
+    padding: 0.75rem 1.25rem;
+    margin-bottom: 1.25rem;
+  }
+
+  &-body {
+    overflow: auto;
+  }
+
   &-column {
     width: fit-content;
     z-index: 103;
@@ -396,7 +430,7 @@ const getValueByName = (item, name) => {
       background-color: rgb(var(--color-white));
       border-radius: 0.33rem;
       padding: 0 0.75rem;
-      transform: translateY(0.75rem);
+      transform: translateY(1.75rem);
     }
 
     .control__checkbox {
@@ -405,19 +439,15 @@ const getValueByName = (item, name) => {
 
     &-select {
       background-color: rgb(var(--color-white));
-      border-radius: 0.33rem;
       cursor: pointer;
-      padding: 0.75rem 1.25rem;
-      margin-bottom: 0.75rem;
     }
   }
 
   &__block {
     border-collapse: collapse;
-    border-radius: 0.33rem;
-    overflow: hidden;
     caption-side: bottom;
     text-align: left;
+    width: 100%;
 
     tr {
       background-color: rgb(var(--color-white));
@@ -438,12 +468,14 @@ const getValueByName = (item, name) => {
   }
 
   &-count {
+    border-top: 2px solid rgb(var(--color-pre-white));
+    padding-left: 0.75rem;
+    margin-top: 1.25rem;
+    // padding-top: 0.25rem;
+
     &__amount {
-      background-color: rgb(var(--color-white));
-      border-radius: 0.33rem;
       display: flex;
       align-items: center;
-      padding: 0.75rem 1.25rem;
     }
   }
 }
