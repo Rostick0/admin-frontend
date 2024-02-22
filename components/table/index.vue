@@ -1,5 +1,5 @@
 <template>
-  <UiTable v-if="cols?.length" style="margin-bottom: 150px">
+  <UiTable v-if="cols?.length">
     <template #header>
       <UiStack justify-content="space-between" align-items="center">
         {{ title }}
@@ -55,18 +55,7 @@
                 class="resizable"
               >
                 <UiStack gap="1">
-                  <div
-                    style="
-                      position: absolute;
-                      top: -32px;
-                      left: 0;
-                      right: 0;
-                      z-index: -100;
-                      margin: 0 auto;
-                      height: 35px;
-                      background-color: rgb(239, 239, 239);
-                    "
-                  />
+                  <div class="resize-invisible"></div>
 
                   <template v-if="!col?.can_not_sort && col.name != 'actions'">
                     <div
@@ -127,7 +116,8 @@
                 </UiStack>
               </th>
             </template>
-            <th></th>
+            <!-- <th></th> -->
+            <!-- <th style="width: 1px;overflow: hidden;padding: 0;"></th> -->
           </tr>
         </thead>
 
@@ -146,7 +136,7 @@
                 <template v-else>{{ getValueByName(item, col.name) }}</template>
               </td>
             </template>
-            <td></td>
+            <!-- <td></td> -->
           </tr>
         </tbody>
       </table>
@@ -159,13 +149,7 @@
               <UiStack gap="1">
                 <div>{{ col.title }}</div>
 
-                <template
-                  v-if="
-                    col.name.split('.').length <= 1 &&
-                    !col?.can_not_sort &&
-                    col.name != 'actions'
-                  "
-                >
+                <template v-if="!col?.can_not_sort && col.name != 'actions'">
                   <button
                     v-if="
                       filterForm?.sort == col.name &&
@@ -216,13 +200,7 @@
             <th v-for="col in cols">
               <UiStack gap="1">
                 <div>{{ col.title }}</div>
-                <template
-                  v-if="
-                    col.name.split('.').length <= 1 &&
-                    !col?.can_not_sort &&
-                    col.name != 'actions'
-                  "
-                >
+                <template v-if="!col?.can_not_sort && col.name != 'actions'">
                   <button
                     v-if="
                       filterForm?.sort == col.name &&
@@ -369,27 +347,41 @@ const getValueByName = (item, name) => {
 <style lang="scss" scoped>
 .reziser-wrapper {
   cursor: col-resize;
-  padding: 0 10px;
+  padding: 0 0.625rem;
   position: absolute;
+  user-select: none;
   margin-right: -10px;
   top: 0;
   right: 0;
   height: 100%;
   z-index: 100;
 
-  &:hover {
+  // &:hover {
     .resizer {
-      background: rgba(49, 81, 183, 0.216);
+      background-color: rgb(var(--color-white), 0.75);
       // height: 100%;
       cursor: col-resize;
     }
-  }
+  // }
+}
+
+.resize-invisible {
+  background-color: rgb(239, 239, 239);
+  position: absolute;
+  top: -32px;
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+  height: 35px;
+  z-index: -100;
 }
 
 .resizer {
-  background: rgba(49, 80, 183, 0.03);
+  background-color: rgb(var(--color-white), 0.25);
   color: white;
+  pointer-events: none;
   user-select: none;
+  transition: 0.3s;
   // margin-right: -10px;
   height: 100%;
   width: 3px;
@@ -397,6 +389,7 @@ const getValueByName = (item, name) => {
 
 .table {
   &-column {
+    width: fit-content;
     z-index: 103;
 
     &-dropdown {
@@ -413,6 +406,7 @@ const getValueByName = (item, name) => {
     &-select {
       background-color: rgb(var(--color-white));
       border-radius: 0.33rem;
+      cursor: pointer;
       padding: 0.75rem 1.25rem;
       margin-bottom: 0.75rem;
     }
@@ -454,8 +448,9 @@ const getValueByName = (item, name) => {
   }
 }
 .resizable {
-  background: #f5f9fc;
+  background: rgb(var(--color-blue-light));
   border-bottom: 1px solid #eee;
+  color: rgb(var(--color-white));
   font-size: 0.675rem;
   font-weight: 500;
   letter-spacing: 0.025em;
@@ -465,13 +460,13 @@ const getValueByName = (item, name) => {
   vertical-align: middle;
   white-space: nowrap;
 
-  &:not(:last-child) {
-    position: relative;
-    height: 100%;
+  // &:not(:last-child) {
+  position: relative;
+  height: 100%;
 
-    // width: 200px;
-    // min-width: 200px;
-  }
+  // width: 200px;
+  // min-width: 200px;
+  // }
 }
 
 .table-sort-btn {

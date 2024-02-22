@@ -7,6 +7,10 @@ export default (_cols, { resizeCallback }) => {
   const mouseDownPos = ref();
 
   const mouseDownHandler = (e, col) => {
+    if (!col.width) {
+      col.width = e.target?.parentNode?.parentNode?.offsetWidth ?? 0;
+    }
+
     col.mouseDownWidth = col.width;
 
     col.mouseDown = true;
@@ -17,8 +21,9 @@ export default (_cols, { resizeCallback }) => {
         return;
       }
       const width = col.mouseDownWidth + (e.clientX - mouseDownPos.value);
+      console.log(col.mouseDownWidth, e.clientX, mouseDownPos.value);
       if (
-        width > 80
+        width > 80 && width <= 750
         // && cols.value.reduce((acc, i) => i.width + acc, -col.width) + width < 1400
       ) {
         col.width = width;
@@ -71,7 +76,7 @@ export default (_cols, { resizeCallback }) => {
   };
 
   const restore = async (_cols) => {
-    cols.value = _cols.map((i) => ({ ...i, width: i?.width ?? 'auto' }));
+    cols.value = _cols.map((i) => ({ ...i, width: i?.width ?? "" }));
   };
 
   onMounted(async () => {

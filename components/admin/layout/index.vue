@@ -11,6 +11,10 @@
 <script setup>
 import Aside from "../components/Aside.vue";
 import Header from "./Header.vue";
+
+onMounted(() => {
+    document.body.style.overflow = 'hidden';
+})
 </script>
 
 <style lang="scss" scoped>
@@ -22,6 +26,8 @@ import Header from "./Header.vue";
         display: flex;
         flex-direction: column;
         flex-grow: 1;
+        overflow: auto;
+        max-height: 100vh;
     }
 
     &__main {
