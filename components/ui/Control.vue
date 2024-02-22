@@ -1,6 +1,14 @@
 <template>
-  <div class="control"
-    :class="[{ invalid }, { valid }, { control__hideMessage: hideMessage }, leftIcon ? 'leftIcon' : '', rightIcon ? 'rightIcon' : '']">
+  <div
+    class="control"
+    :class="[
+      { invalid },
+      { valid },
+      { control__hideMessage: hideMessage },
+      leftIcon ? 'leftIcon' : '',
+      rightIcon ? 'rightIcon' : '',
+    ]"
+  >
     <div v-if="label" class="control__label">
       {{ label }}
     </div>
@@ -34,7 +42,6 @@ defineComponent({
   inheritAttrs: false,
 });
 
-
 interface Props extends /* @vue-ignore */ InputHTMLAttributes {
   label?: string;
   rightIcon?: any;
@@ -42,10 +49,20 @@ interface Props extends /* @vue-ignore */ InputHTMLAttributes {
   message?: any;
   invalid?: boolean;
   valid?: boolean;
-  hideMessage?: boolean
+  hideMessage?: boolean;
 }
 
 defineProps<Props>();
 </script>
 
-<style lang="scss"></style>
+<style lang="scss" scoped>
+.control {
+  display: flex;
+  flex-direction: column;
+  row-gap: 0.5rem;
+
+  &__message {
+    font-size: 0.875rem;
+  }
+}
+</style>

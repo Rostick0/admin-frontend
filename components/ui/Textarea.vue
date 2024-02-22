@@ -1,9 +1,9 @@
 <template>
   <UiControl
-      :label="label"
-      :invalid="!!errorMessage || invalid"
-      :message="errorMessage || message"
-      :rightIcon="rightIcon"
+    :label="label"
+    :invalid="!!errorMessage || invalid"
+    :message="errorMessage || message"
+    :rightIcon="rightIcon"
   >
     <textarea
       class="control__textarea"
@@ -12,15 +12,18 @@
       :data-maska-tokens="maskaTokens"
       :data-maska-reversed="dataMaskReserved"
       @input="
-        $emit('update:modelValue', ($event.target as HTMLInputElement).value || undefined)
-        "
+        $emit(
+          'update:modelValue',
+          ($event.target as HTMLInputElement).value || undefined
+        )
+      "
       :value="modelValue"
-    /> 
+    />
   </UiControl>
 </template>
 
 <script setup lang="ts">
-import  {type TextareaHTMLAttributes } from "vue";
+import { type TextareaHTMLAttributes } from "vue";
 
 export interface FieldProps extends /* @vue-ignore */ TextareaHTMLAttributes {
   modelValue?: string;
@@ -30,9 +33,9 @@ export interface FieldProps extends /* @vue-ignore */ TextareaHTMLAttributes {
   label?: string;
   placeholder?: string;
   maska?: any;
-  dataMaskReserved?: boolean
+  dataMaskReserved?: boolean;
   maskaTokens?: any;
-  errorMessage?: string
+  errorMessage?: string;
 }
 
 interface Emits {
@@ -43,4 +46,11 @@ defineEmits<Emits>();
 defineProps<FieldProps>();
 </script>
 
-<style lang="scss"></style>
+<style lang="scss" scoped>
+.control__textarea {
+  border-radius: 0.33rem;
+  font-size: 1rem;
+  padding: 0.75rem 1.25rem;
+  width: 100%;
+}
+</style>

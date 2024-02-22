@@ -268,6 +268,7 @@
             Итого записей: {{ meta?.total ?? 0 }}
           </div>
           <BasePagination
+            class="table-pagination"
             :total="meta?.total"
             :limit="meta?.per_page"
             v-if="filterForm"
@@ -469,14 +470,18 @@ const getValueByName = (item, name) => {
 
   &-count {
     border-top: 2px solid rgb(var(--color-pre-white));
+    align-items: center;
     padding-left: 0.75rem;
     margin-top: 1.25rem;
-    // padding-top: 0.25rem;
 
     &__amount {
       display: flex;
       align-items: center;
     }
+  }
+
+  &-pagination {
+    padding: 0.5rem 0;
   }
 }
 .resizable {
@@ -486,18 +491,15 @@ const getValueByName = (item, name) => {
   font-size: 0.675rem;
   font-weight: 500;
   letter-spacing: 0.025em;
-  padding-bottom: 1rem;
-  padding-top: 1rem;
   text-transform: uppercase;
   vertical-align: middle;
   white-space: nowrap;
-
+  padding-bottom: 1rem;
+  padding-top: 1rem;
   // &:not(:last-child) {
   position: relative;
+  overflow: hidden;
   height: 100%;
-
-  // width: 200px;
-  // min-width: 200px;
   // }
 }
 
