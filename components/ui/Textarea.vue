@@ -52,5 +52,6 @@ defineProps<FieldProps>();
   font-size: 1rem;
   padding: 0.75rem 1.25rem;
   width: 100%;
+  min-height: 42.4px;
 }
 </style>

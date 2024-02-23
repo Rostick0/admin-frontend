@@ -4,11 +4,16 @@
 
 .svg-fill,
 .svg-stroke {
-    transition: .3s;
+  transition: 0.3s;
 }
 
 .wrapper {
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.Vue-Toastification__toast {
+  z-index: 10000000000000;
+  position: relative;
 }

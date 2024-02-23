@@ -3,12 +3,11 @@
     <UiStack flex-direction="column" gap="2">
       <UiCard padding="4">
         <UiStack flex-direction="column" gap="2">
-          <form @submit="onSubmit" gap="2">
+          <form @submit="onSubmit">
             <UiStack flex-direction="column" gap="3">
               <VFormComponent :field="title" />
-              <VFormComponent :field="content" />
+              <VFormComponent :field="description" />
               <VFormComponent :field="images" />
-              <VFormComponent :field="source" />
               <UiStack>
                 <UiButton>Сохранить</UiButton>
               </UiStack>
@@ -24,31 +23,29 @@
 import { useForm } from "vee-validate";
 import api from "~/api";
 
-const form = useForm();
+const { handleSubmit, setErrors } = useForm();
 
 const title = ref({
   type: "text",
   modelValue: "",
   name: "title",
-  rules: "required|min:6",
+  rules: "required",
 
   bind: {
-    label: "Заголовок",
-    placeholder: "Введите заголовок новости",
-    message: "Обязательное*",
+    label: "Название*",
+    placeholder: "Введите название новости",
   },
 });
 
-const content = ref({
+const description = ref({
   type: "textarea",
   modelValue: "",
-  name: "content",
-  rules: "required|min:100",
+  name: "Описание*",
+  rules: "required",
 
   bind: {
-    label: "Текст статьи",
-    placeholder: "Введите текст статьи",
-    message: "Обязательное*",
+    label: "Описание",
+    placeholder: "Введите описание",
   },
 });
 
@@ -57,36 +54,37 @@ const images = ref({
   name: "images",
 
   bind: {
-    label: "Выберите фото статьи",
+    label: "Фотографии",
   },
 });
 
-const source = ref({
-  type: "text",
-  name: "source",
-  rules: "required",
-
-  bind: {
-    label: "Ссылка на источник",
-    placeholder: "Введите ссылку на источник",
-    message: "Обязательное*",
-  },
-});
-
-const onSubmit = form.handleSubmit(async ({ image, images, ...values }) => {
-  const { getImageIdFrom, getImageIdsFrom } = useImage();
+const onSubmit = handleSubmit(async ({ images, ...values }) => {
+  const { getImageIdsFrom } = useImage();
 
   let imagesIds = await getImageIdsFrom(images);
 
-  await api.vendors.create({
+  const res = await api.vendors.create({
     data: {
       ...values,
       images: imagesIds,
     },
   });
 
-  useRouter().push("/posts");
-});
+  if (res?.error) {
+    warningPopup(res?.errorResponse?.data?.message);
+    if (res?.errorResponse?.data?.errors)
+      setErrors(res?.errorResponse?.data?.errors);
+
+    // errorMessage(
+    //   res?.errorResponse?.data?.message,
+    //   res?.errorResponse?.data?.errors,
+    //   setErrors
+    // );
+  }
+
+  console.log(res);
+  // useRouter().push("/posts");
+}, invalidValuesForm);
 </script>
 
 <style></style>
