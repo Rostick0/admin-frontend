@@ -9,7 +9,7 @@
       class="svg-stroke"
       fill="none"
       fill-rule="evenodd"
-      stroke="#000000"
+      stroke="rgb(var(--color-dark))"
       stroke-linecap="round"
       stroke-linejoin="round"
       transform="translate(4 3)"

@@ -51,6 +51,13 @@ const menu = computed(() => [
     name: "Рубрики",
     icon: defineAsyncComponent(() => import("@/components/icon/Rubric.vue")),
   },
+  {
+    link: {
+      name: "admin-vendors",
+    },
+    name: "Производители",
+    icon: defineAsyncComponent(() => import("@/components/icon/Vendor.vue")),
+  }
 ]);
 </script>
 

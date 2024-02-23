@@ -1,9 +1,11 @@
 import { getErrorData } from "./base";
 
 export default function useFetcher() {
-  const token = useCookie("ag-accessToken",{ maxAge: 60 * 60 * 24 * 7 }).value;
+  const token =
+    "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczovL2NtMzE1NjMudG13ZWIucnUvYXBpL3YxL2F1dGgvbG9naW4iLCJpYXQiOjE3MDg3MDI2MTQsImV4cCI6MTcwOTMwNzQxNCwibmJmIjoxNzA4NzAyNjE0LCJqdGkiOiJGaDFFZXBCNFNtZzJRZUZDIiwic3ViIjoiMSIsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.kqDT6QrZLr_Mn-X2AmrmtqHaGdq5F3PFL0Vukcb7EIo" ??
+    useCookie("ag-accessToken", { maxAge: 60 * 60 * 24 * 7 }).value;
   const config = useRuntimeConfig();
-  const baseUrl = config.public.API_URL ?? 'https://cm31563.tmweb.ru/api/v1';
+  const baseUrl = config.public.API_URL ?? "https://cm31563.tmweb.ru/api/v1";
 
   const initialParams = {
     baseURL: baseUrl,

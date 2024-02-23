@@ -5,7 +5,7 @@
         <UiStack flex-direction="column" gap="2">
           <form @submit="onSubmit">
             <UiStack flex-direction="column" gap="3">
-              <VFormComponent :field="title" />
+              <VFormComponent :field="name" />
               <VFormComponent :field="description" />
               <VFormComponent :field="images" />
               <UiStack>
@@ -25,26 +25,26 @@ import api from "~/api";
 
 const { handleSubmit, setErrors } = useForm();
 
-const title = ref({
+const name = ref({
   type: "text",
   modelValue: "",
-  name: "title",
+  name: "name",
   rules: "required",
 
   bind: {
     label: "Название*",
-    placeholder: "Введите название новости",
+    placeholder: "Введите название",
   },
 });
 
 const description = ref({
   type: "textarea",
   modelValue: "",
-  name: "Описание*",
+  name: "description",
   rules: "required",
 
   bind: {
-    label: "Описание",
+    label: "Описание*",
     placeholder: "Введите описание",
   },
 });
@@ -75,6 +75,7 @@ const onSubmit = handleSubmit(async ({ images, ...values }) => {
     if (res?.errorResponse?.data?.errors)
       setErrors(res?.errorResponse?.data?.errors);
 
+    return;
     // errorMessage(
     //   res?.errorResponse?.data?.message,
     //   res?.errorResponse?.data?.errors,
@@ -83,6 +84,14 @@ const onSubmit = handleSubmit(async ({ images, ...values }) => {
   }
 
   console.log(res);
+  nextTick(() => {
+    navigateTo({
+      name: 'admin-vendors-id',
+      params: {
+        id: res?.data?.id
+      }
+    })
+  })
   // useRouter().push("/posts");
 }, invalidValuesForm);
 </script>

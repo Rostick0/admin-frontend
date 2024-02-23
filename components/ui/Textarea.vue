@@ -18,7 +18,8 @@
         )
       "
       :value="modelValue"
-    />
+      rows="3"
+    ></textarea>
   </UiControl>
 </template>
 
