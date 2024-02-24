@@ -1,6 +1,11 @@
 <template>
   <AdminLayout>
-    <Table :data="computedData" :cols="cols" :meta="meta" :filterForm="filterForm"></Table>
+    <Table
+      :data="computedData"
+      :cols="cols"
+      :meta="meta"
+      :filterForm="filterForm"
+    ></Table>
     <!-- <pre>
       {{ data?.[1] }}
     </pre> -->
@@ -8,6 +13,8 @@
 </template>
 
 <script setup>
+import TableActions from "@/components/table/TableActions.vue";
+
 const { filterForm, filters } = useFilters({
   page: 1,
   limit: 20,
@@ -23,8 +30,9 @@ const { data, meta, get } = await useApi({
 });
 
 const computedData = computed(() => {
-  return data.value?.map(({ count, ...item }) => ({
+  return data.value?.map(({ count, price, ...item }) => ({
     ...item,
+    price: (+price)?.toLocaleString(),
     count: item?.is_infinitely ? "ထ" : count,
   }));
 });
@@ -59,6 +67,23 @@ const cols = [
     title: "Категория",
     name: "vendor.name",
     resizable: true,
+  },
+  {
+    name: "actions",
+    renderComponent: () =>
+      h(TableActions, {
+        onUpdate(id) {
+          // useRouter().push(`/flats/${id}`);
+          console.log(id, 1);
+        },
+        async onDelete(id) {
+          // await api.post.delete({ id });
+          // await get();
+          console.log(id);
+        },
+        id: 1,
+      }),
+    width: 30,
   },
 ];
 

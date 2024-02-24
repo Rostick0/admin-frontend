@@ -110,7 +110,7 @@
                         </button>
                       </div>
                     </template>
-                    <div v-else>{{ col.title }} 1</div>
+                    <div v-else>{{ col.title }}</div>
                     <!-- <button style="position: absolute;top: -32px;right: 0; font-size: 25px;"
                                         @click="changeOrder(col.id, +1)">
                                         &#8594;

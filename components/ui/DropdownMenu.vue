@@ -6,10 +6,7 @@
     <div
       class="dropdown-menu"
       v-if="wrapper && isOpened"
-      :style="`top:${
-        wrapper?.getBoundingClientRect()?.top + wrapper.clientHeight
-      }px;
-            left:${wrapper?.getBoundingClientRect()?.left}px;`"
+      ref="dropdownMenu"
       tabindex="-1"
     >
       <slot name="drop" />
@@ -27,6 +24,36 @@ const onFocusout = (e) => {
 
 const toggle = () => {
   isOpened.value = !isOpened.value;
+
+  if (!isOpened.value) return;
+  
+  nextTick(() => {
+    const dropdownMenu = wrapper.value?.querySelector(".dropdown-menu");
+    const elementRect = dropdownMenu.getBoundingClientRect();
+
+    if (elementRect.right > window.innerWidth) {
+      dropdownMenu.style.left =
+        wrapper.value?.getBoundingClientRect()?.left -
+        elementRect?.width +
+        "px";
+    } else {
+      dropdownMenu.style.left =
+        wrapper.value?.getBoundingClientRect()?.left + "px";
+    }
+
+    if (elementRect.bottom > window.innerHeight) {
+      dropdownMenu.style.top =
+        wrapper.value?.getBoundingClientRect()?.top +
+        wrapper.value?.clientHeight -
+        elementRect?.height +
+        "px";
+    } else {
+      dropdownMenu.style.top =
+        wrapper.value?.getBoundingClientRect()?.top +
+        wrapper.value?.clientHeight +
+        "px";
+    }
+  });
 };
 </script>
 
