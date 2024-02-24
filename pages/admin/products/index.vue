@@ -6,6 +6,10 @@
       :meta="meta"
       :filterForm="filterForm"
     ></Table>
+    <AdminComponentsModalDelete
+      @confirm="deleteConfirm"
+      @cancel="deleteCancel"
+    />
     <!-- <pre>
       {{ data?.[1] }}
     </pre> -->
@@ -15,8 +19,11 @@
 <script setup>
 import TableActions from "@/components/table/TableActions.vue";
 
+const { close, open } = useModal({ name: "data-delete" });
+
 const { filterForm, filters } = useFilters({
   page: 1,
+  sort: "id",
   limit: 20,
 });
 
@@ -36,6 +43,33 @@ const computedData = computed(() => {
     count: item?.is_infinitely ? "ထ" : count,
   }));
 });
+
+const { deleteId, deleteConfirm, deleteCancel } = useDeleteConfirm({
+  apiName: "products",
+  get,
+  close,
+});
+// const deleteId = ref(0);
+
+// const deleteConfirm = async () => {
+//   const res = await api['products'].delete({
+//     id: deleteId.value,
+//   });
+
+//   if (res?.error) {
+//     warningPopup(res?.errorResponse?.data?.message);
+//   } else {
+//     get();
+//   }
+
+//   close();
+//   deleteId.value = null;
+// };
+
+// const deleteCancel = () => {
+//   close();
+//   deleteId.value = null;
+// };
 
 const cols = [
   {
@@ -73,13 +107,19 @@ const cols = [
     renderComponent: () =>
       h(TableActions, {
         onUpdate(id) {
-          // useRouter().push(`/flats/${id}`);
-          console.log(id, 1);
+          navigateTo({
+            name: "admin-products-id",
+            params: {
+              id,
+            },
+          });
         },
         async onDelete(id) {
+          open();
+
+          deleteId.value = id;
           // await api.post.delete({ id });
           // await get();
-          console.log(id);
         },
         id: 1,
       }),

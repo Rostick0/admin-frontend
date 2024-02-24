@@ -32,7 +32,7 @@ const menu = computed(() => [
   },
   {
     link: {
-      name: "admin-products",
+      name: "admin-categories",
     },
     name: "Категории",
     icon: defineAsyncComponent(() => import("@/components/icon/Category.vue")),

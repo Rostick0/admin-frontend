@@ -1,7 +1,6 @@
 <template>
   <AdminLayout>
     <Table
-      title="Производители"
       :data="computedData"
       :cols="cols"
       :meta="meta"
@@ -23,16 +22,19 @@ const { filterForm, filters } = useFilters({
 });
 
 const { data, meta, get } = await useApi({
-  name: "vendors.getAll",
-  params: {},
+  name: "products.getAll",
+  params: {
+    extends: "category,vendor",
+  },
   filters: filters,
   init: false,
 });
 
 const computedData = computed(() => {
-  return data.value?.map(({ created_at, ...item }) => ({
+  return data.value?.map(({ count, price, ...item }) => ({
     ...item,
-    created_at: new Date(created_at).toLocaleString(),
+    price: (+price)?.toLocaleString(),
+    count: item?.is_infinitely ? "ထ" : count,
   }));
 });
 
@@ -43,13 +45,28 @@ const cols = [
     resizable: true,
   },
   {
-    title: "Имя",
-    name: "name",
+    title: "Цена",
+    name: "price",
     resizable: true,
   },
   {
-    title: "Создан",
-    name: "created_at",
+    title: "Количество",
+    name: "count",
+    resizable: true,
+  },
+  {
+    title: "Просмотры",
+    name: "views",
+    resizable: true,
+  },
+  {
+    title: "Категория",
+    name: "category.name",
+    resizable: true,
+  },
+  {
+    title: "Категория",
+    name: "vendor.name",
     resizable: true,
   },
   {
@@ -58,7 +75,7 @@ const cols = [
       h(TableActions, {
         onUpdate(id) {
           navigateTo({
-            name: "admin-vendors-id",
+            name: "admin-products-id",
             params: {
               id,
             },

@@ -420,7 +420,7 @@ const getValueByName = (item, name) => {
   }
 
   &-body {
-    overflow: auto;
+    overflow-x: auto;
   }
 
   &-column {
@@ -448,6 +448,7 @@ const getValueByName = (item, name) => {
     border-collapse: collapse;
     caption-side: bottom;
     text-align: left;
+    overflow-y: hidden;
     width: 100%;
 
     tr {

@@ -26,16 +26,14 @@ const toggle = () => {
   isOpened.value = !isOpened.value;
 
   if (!isOpened.value) return;
-  
+
   nextTick(() => {
     const dropdownMenu = wrapper.value?.querySelector(".dropdown-menu");
     const elementRect = dropdownMenu.getBoundingClientRect();
 
     if (elementRect.right > window.innerWidth) {
       dropdownMenu.style.left =
-        wrapper.value?.getBoundingClientRect()?.left -
-        elementRect?.width +
-        "px";
+        window.innerWidth - 20 - elementRect?.width + "px";
     } else {
       dropdownMenu.style.left =
         wrapper.value?.getBoundingClientRect()?.left + "px";
@@ -43,8 +41,10 @@ const toggle = () => {
 
     if (elementRect.bottom > window.innerHeight) {
       dropdownMenu.style.top =
-        wrapper.value?.getBoundingClientRect()?.top +
-        wrapper.value?.clientHeight -
+        window.innerHeight -
+        20 -
+        // wrapper.value?.getBoundingClientRect()?.top +
+        // wrapper.value?.clientHeight -
         elementRect?.height +
         "px";
     } else {
@@ -60,7 +60,7 @@ const toggle = () => {
 <style lang="scss">
 .dropdown {
   &-menu {
-    position: absolute;
+    position: fixed;
     z-index: 102;
     width: 200px;
 
