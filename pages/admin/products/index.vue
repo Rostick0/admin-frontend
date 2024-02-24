@@ -1,10 +1,33 @@
 <template>
   <AdminLayout>
+    <AdminFilter>
+      <VFormComponent
+        v-model="filterForm['filterLIKE[title]']"
+        :field="title"
+      />
+      <VFormComponent
+        v-model="filterForm['filterGEQ[price]']"
+        :field="priceGeq"
+      />
+      <VFormComponent
+        v-model="filterForm['filterLEQ[price]']"
+        :field="priceLeq"
+      />
+      <VFormComponent
+        v-model="filterForm['filterEQ[category_id]']"
+        :field="category_id"
+      />
+      <VFormComponent
+        v-model="filterForm['filterEQ[vendor_id]']"
+        :field="vendor_id"
+      />
+    </AdminFilter>
     <Table
       :data="computedData"
       :cols="cols"
       :meta="meta"
       :filterForm="filterForm"
+      title="Товары"
     ></Table>
     <AdminComponentsModalDelete
       @confirm="deleteConfirm"
@@ -17,14 +40,109 @@
 </template>
 
 <script setup>
+import api from "~/api";
 import TableActions from "@/components/table/TableActions.vue";
 
 const { close, open } = useModal({ name: "data-delete" });
 
 const { filterForm, filters } = useFilters({
+  defFilters: [
+    // {
+    //   name: "filterLIKE[title]",
+    //   // prePareKey: () => "",
+    //   // prepare: true,
+    // },
+    {
+      name: "filterLIKE[title]",
+    },
+    {
+      name: "filterGEQ[price]",
+    },
+    {
+      name: "filterLEQ[price]",
+    },
+    {
+      name: "filterEQ[category_id]",
+    },
+    {
+      name: "filterEQ[vendor_id]",
+    },
+  ],
   page: 1,
   sort: "id",
   limit: 20,
+});
+
+const title = ref({
+  type: "text",
+  name: "title",
+
+  bind: {
+    label: "Название",
+    placeholder: "Введите название",
+  },
+});
+
+const priceGeq = ref({
+  type: "text",
+  name: "price",
+  rules: "max:7",
+
+  bind: {
+    label: "Стоимость (от)",
+    dataMaska: maskaOnlyNumber.mask,
+    maskaTokens: maskaOnlyNumber.tokens,
+  },
+});
+
+const priceLeq = ref({
+  type: "text",
+  name: "price",
+  rules: "max:7",
+
+  bind: {
+    label: "Стоимость (до)",
+    dataMaska: maskaOnlyNumber.mask,
+    maskaTokens: maskaOnlyNumber.tokens,
+  },
+});
+
+const category_id = ref({
+  type: "select",
+  name: "category_id",
+
+  bind: {
+    label: "Категория",
+    modelValueIsNumber: true,
+    debounceMs: 200,
+    limit: 20,
+    searchFn: async (_ctx, search, limit, page) => {
+      return await getCategoriesOptions({
+        limit,
+        page,
+        "filterLIKE[name]": search,
+      });
+    },
+  },
+});
+
+const vendor_id = ref({
+  type: "select",
+  name: "vendor_id",
+
+  bind: {
+    label: "Производитель",
+    modelValueIsNumber: true,
+    debounceMs: 200,
+    limit: 20,
+    searchFn: async (_ctx, search, limit, page) => {
+      return await getVendorsOptions({
+        limit,
+        page,
+        "filterLIKE[name]": search,
+      });
+    },
+  },
 });
 
 const { data, meta, get } = await useApi({
@@ -32,7 +150,7 @@ const { data, meta, get } = await useApi({
   params: {
     extends: "category,vendor",
   },
-  filters: filters,
+  filters,
   init: false,
 });
 
@@ -78,6 +196,11 @@ const cols = [
     resizable: true,
   },
   {
+    title: "Название",
+    name: "title",
+    resizable: true,
+  },
+  {
     title: "Цена",
     name: "price",
     resizable: true,
@@ -98,7 +221,7 @@ const cols = [
     resizable: true,
   },
   {
-    title: "Категория",
+    title: "Производитель",
     name: "vendor.name",
     resizable: true,
   },
@@ -137,6 +260,30 @@ const cols = [
 //   name: item,
 //   resizable: true,
 // }));
+
+async function getCategoriesOptions(params) {
+  try {
+    const { data } = await api.categories.getAll({
+      params: params,
+    });
+
+    return data?.map((item) => ({ id: item.id, value: item.name, item }));
+  } catch (e) {
+    console.log(error);
+  }
+}
+
+async function getVendorsOptions(params) {
+  try {
+    const { data } = await api.vendors.getAll({
+      params: params,
+    });
+
+    return data?.map((item) => ({ id: item.id, value: item.name, item }));
+  } catch (e) {
+    console.log(error);
+  }
+}
 </script>
 
 <style></style>

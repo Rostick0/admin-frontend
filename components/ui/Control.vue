@@ -60,6 +60,7 @@ defineProps<Props>();
   display: flex;
   flex-direction: column;
   row-gap: 0.5rem;
+  width: 100%;
 
   &__message {
     font-size: 0.875rem;

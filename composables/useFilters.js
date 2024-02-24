@@ -9,6 +9,7 @@ const useFilters = ({
   sort = null,
   page = null,
   limit = null,
+  filterQ = null,
 }) => {
   const id = _.uniqueId();
   const router = useRouter();
@@ -60,6 +61,9 @@ const useFilters = ({
       }
       if (page) {
         data.page = page;
+      }
+      if (filterQ) {
+        data.filterQ = filterQ;
       }
 
       return data;
@@ -117,6 +121,9 @@ const useFilters = ({
       if (filterForm.value.hasOwnProperty("limit")) {
         data.limit = filterForm.value.limit;
       }
+      if (filterForm.value.hasOwnProperty("filterQ")) {
+        data.filterQ = filterForm.value.filterQ;
+      }
 
       defFilters.map((def) => {
         const key = def.name;
@@ -151,7 +158,7 @@ const useFilters = ({
           const pre = def?.prepareFunc
             ? def?.prepareFunc(filterForm.value[key], filterForm)
             : filterForm.value[key];
-            
+
           if (pre == undefined) {
             return;
           }

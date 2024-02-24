@@ -6,15 +6,10 @@
     :message="errorMessage || message"
     :rightIcon="rightIcon"
   >
-    <div
-      @focusout="onFocusout"
-      ref="wrapper"
-      tabindex="-1"
-      class="control__select"
-    >
+    <div @focusout="onFocusout" ref="wrapper" tabindex="-1" class="select">
       <div
         @keydown.enter="isOpened = !isOpened"
-        class="control__field"
+        class="select__field"
         tabindex="0"
         :class="{ select__active: isOpened }"
         @click="toggle"
@@ -25,6 +20,7 @@
             {{ (model?.value ?? model?.name ?? model?.title) || "Не выбрано" }}
           </div>
           <input
+            class="select__value"
             ref="inputRef"
             @input="$emit('update:searchString', $event.target.value)"
             :value="searchString"
@@ -167,41 +163,53 @@ const handleScroll = (event) => {
 </script>
 
 <style lang="scss" scoped>
-.control__select {
+.select {
   cursor: pointer;
   position: relative;
 
+  &__field {
+    width: 100%;
+  }
+
   input {
-    line-height: 1.3;
     width: 100%;
 
     &::placeholder {
       line-height: 1.3;
     }
   }
-  .select__value {
+
+  &__value {
     background-color: rgb(var(--color-white));
     border-radius: 0.33rem;
+    font-size: 1rem;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
     padding: 0.75rem 1.25rem;
+    width: 100%;
   }
 
-  .options__item {
-    transition: 0.3s;
+  .options {
+    &__item {
+      transition: 0.3s;
 
-    &:hover {
-      background-color: rgb(var(--color-grey-light));
-      // color: rgb(var(--color-white));
+      &:hover {
+        background-color: rgb(var(--color-blue-light));
+        color: rgb(var(--color-white));
+      }
+      &.selected {
+        background-color: rgb(var(--color-dark));
+        color: rgb(var(--color-white));
+      }
     }
-    &.selected {
-      background-color: rgb(var(--color-blue-light));
-      color: rgb(var(--color-white));
+
+    &__notfound {
+      cursor: default;
     }
   }
 
-  .select__options {
+  &__options {
     background-color: rgb(var(--color-white));
     border-radius: 0.33rem;
     border: 1px solid rgb(var(--color-pre-white));
@@ -210,7 +218,7 @@ const handleScroll = (event) => {
     top: 108%;
     left: 0;
     overflow: auto;
-    max-height: 400px;
+    max-height: 20rem;
     width: 100%;
     z-index: 1000000;
 
@@ -220,7 +228,7 @@ const handleScroll = (event) => {
       appearance: none;
       background-repeat: no-repeat;
       background-position: right 1.25rem center;
-      background-size: 1rem .75rem;
+      background-size: 1rem 0.75rem;
       // rgb(var(--color-pre-white))
       border-bottom: 1px solid rgb(var(--color-pre-white));
       display: block;

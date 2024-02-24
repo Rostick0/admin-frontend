@@ -1,7 +1,7 @@
 import { useToast } from "vue-toastification";
 const toast = useToast();
 
-export const warningPopup = (message = "Упс что то пошло не так!") => {
+export const warningPopup = (message = "Упс, что-то пошло не так!") => {
   try {
     toast.error(message, 2000);
   } catch (error) {

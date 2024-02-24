@@ -263,7 +263,7 @@
 
     <template #footer>
       <slot name="footer">
-        <UiRow class="table-count" justify-content="space-between">
+        <div class="table-count">
           <div class="table-count__amount">
             Итого записей: {{ meta?.total ?? 0 }}
           </div>
@@ -274,28 +274,30 @@
             v-if="filterForm"
             v-model:current-page="filterForm.page"
           />
-          <UiSelect
-            class=""
-            hideMessage
-            v-if="filterForm"
-            v-model="filterForm.limit"
-            model-value-is-number
-            :options="[
-              {
-                id: 20,
-                value: 20,
-              },
-              {
-                id: 50,
-                value: 50,
-              },
-              {
-                id: 100,
-                value: 100,
-              },
-            ]"
-          />
-        </UiRow>
+          <div>
+            <UiSelect
+              class=""
+              hideMessage
+              v-if="filterForm"
+              v-model="filterForm.limit"
+              model-value-is-number
+              :options="[
+                {
+                  id: 20,
+                  value: 20,
+                },
+                {
+                  id: 50,
+                  value: 50,
+                },
+                {
+                  id: 100,
+                  value: 100,
+                },
+              ]"
+            />
+          </div>
+        </div>
       </slot>
     </template>
   </UiTable>
@@ -471,7 +473,9 @@ const getValueByName = (item, name) => {
 
   &-count {
     border-top: 2px solid rgb(var(--color-pre-white));
+    display: flex;
     align-items: center;
+    justify-content: space-between;
     padding-left: 0.75rem;
     margin-top: 1.25rem;
 

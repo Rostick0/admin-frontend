@@ -29,6 +29,7 @@ const useApi = async ({
   initialValue = null,
   afterInit = () => {},
   popup = true,
+  throttleMs = 300,
 } = {}) => {
   try {
     const id = _.uniqueId();
@@ -189,9 +190,9 @@ const useApi = async ({
     if (isReactive(filters.value)) {
       watch(
         [() => filters.value],
-        async () => {
+        useThrottle(async () => {
           await get({ ...params, ...filters });
-        },
+        }, throttleMs),
         { deep: true }
       );
     }
