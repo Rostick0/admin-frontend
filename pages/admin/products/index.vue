@@ -1,24 +1,15 @@
 <template>
   <AdminLayout>
     <AdminFilter>
+      <VFormComponent v-model="filters['filterLIKE[title]']" :field="title" />
+      <VFormComponent v-model="filters['filterGEQ[price]']" :field="priceGeq" />
+      <VFormComponent v-model="filters['filterLEQ[price]']" :field="priceLeq" />
       <VFormComponent
-        v-model="filterForm['filterLIKE[title]']"
-        :field="title"
-      />
-      <VFormComponent
-        v-model="filterForm['filterGEQ[price]']"
-        :field="priceGeq"
-      />
-      <VFormComponent
-        v-model="filterForm['filterLEQ[price]']"
-        :field="priceLeq"
-      />
-      <VFormComponent
-        v-model="filterForm['filterEQ[category_id]']"
+        v-model="filters['filterEQ[category_id]']"
         :field="category_id"
       />
       <VFormComponent
-        v-model="filterForm['filterEQ[vendor_id]']"
+        v-model="filters['filterEQ[vendor_id]']"
         :field="vendor_id"
       />
     </AdminFilter>
@@ -26,7 +17,7 @@
       :data="computedData"
       :cols="cols"
       :meta="meta"
-      :filterForm="filterForm"
+      :filters="filters"
       title="Товары"
     ></Table>
     <AdminComponentsModalDelete
@@ -45,32 +36,17 @@ import TableActions from "@/components/table/TableActions.vue";
 
 const { close, open } = useModal({ name: "data-delete" });
 
-const { filterForm, filters } = useFilters({
-  defFilters: [
-    // {
-    //   name: "filterLIKE[title]",
-    //   // prePareKey: () => "",
-    //   // prepare: true,
-    // },
-    {
-      name: "filterLIKE[title]",
-    },
-    {
-      name: "filterGEQ[price]",
-    },
-    {
-      name: "filterLEQ[price]",
-    },
-    {
-      name: "filterEQ[category_id]",
-    },
-    {
-      name: "filterEQ[vendor_id]",
-    },
-  ],
-  page: 1,
-  sort: "id",
-  limit: 20,
+const { filters } = useFilters({
+  initialFilters: {
+    "filterLIKE[title]": "",
+    "filterGEQ[price]": "",
+    "filterLEQ[price]": "",
+    "filterEQ[category_id]": "",
+    "filterEQ[vendor_id]": "",
+    page: 1,
+    sort: "id",
+    limit: 20,
+  },
 });
 
 const title = ref({
@@ -153,6 +129,7 @@ const { data, meta, get } = await useApi({
   filters,
   init: false,
 });
+await get();
 
 const computedData = computed(() => {
   return data.value?.map(({ count, price, ...item }) => ({

@@ -1,254 +1,52 @@
-import _ from "lodash";
+import uniqueId from "lodash/uniqueId";
+import debounce from "lodash/debounce";
+import cloneDeep from "lodash/cloneDeep";
+import pickBy from "lodash/pickBy";
 
-const useFilters = ({
-  defFilters = [],
-  extend = null,
-  force = true,
-  setRouter = false,
-  name = null,
-  sort = null,
-  page = null,
-  limit = null,
-  filterQ = null,
-}) => {
-  const id = _.uniqueId();
+export default ({
+  initialFilters = {},
+  withQueryParams = false,
+  withInitQueryParams = false,
+  debounceMs = 500,
+} = {}) => {
+  const id = uniqueId();
   const router = useRouter();
-  const route = name ?? useRoute()?.path;
+  const filters = useState("filters-" + id, () => initialFilters);
 
-  const filters = useState(`filters-${id}`, () => {
-    return {};
-  });
-
-  const filtersHistory = useState("filtersHistory", () => {
-    return {};
-  });
-
-  const filtersHistoryForm = useState("filtersHistoryForm", () => {
-    return {};
-  });
-
-  const filterOptions = useState(`filter-options-${id}`, () => defFilters);
-
-  const filterForm = useState(`filter-form-${id}`, () => {});
-
-  const prepareForm = () => {
-    try {
-      const data = {};
-
-      defFilters?.map(({ filter, name, type }) => {
-        let key = name,
-          filterVal = null,
-          method = filter ?? "";
-
-        if (_.isObject(filter)) {
-          filterVal = filter.val;
-          method = filter.method;
-        }
-
-        data[key] = filterVal;
-        if (method === "IN") {
-          data[key] = [];
-        }
-        if (method === "IN" && type == "checkbox") {
-          data[key] = null;
-        }
-      });
-      if (sort) {
-        data.sort = sort;
-      }
-      if (limit) {
-        data.limit = limit;
-      }
-      if (page) {
-        data.page = page;
-      }
-      if (filterQ) {
-        data.filterQ = filterQ;
-      }
-
-      return data;
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  const setFilterField = (field, val, idx) => {
-    if (filterForm.value) {
-      if (idx || typeof idx === "number") {
-        filterForm.value[idx][field] = val;
-      } else {
-        filterForm.value[field] = val;
-      }
-    }
-  };
-
-  if (defFilters) {
-    filterForm.value = prepareForm();
+  if (withInitQueryParams) {
+    // onMounted(() => {
+    const params = useRoute().query;
+    filters.value = {
+      ...filters.value,
+      ...params,
+    };
+    // });
   }
-  watch(
-    () => defFilters,
-    () => {
-      filterOptions.value = defFilters;
-    },
-    { deep: true }
+
+  const resetFilterValues = () => {
+    filters.value = {};
+    if (withQueryParams) router.replace({ query: {} });
+  };
+
+  const urlSerachParams = computed(() =>
+    filters.value ? "?" + new URLSearchParams(filters.value).toString() : ""
   );
 
   watch(
-    () => filterForm.value,
-    (val) => {
-      setFilters();
-    },
-    { deep: true }
-  );
-
-  const setFilters = async () => {
-    try {
-      const data = {};
-
-      if (extend) {
-        data.extends = extend;
-      }
-
-      if (filterForm.value.hasOwnProperty("sort")) {
-        data.sort = filterForm.value.sort;
-      }
-      if (filterForm.value.hasOwnProperty("page")) {
-        data.page = filterForm.value.page;
-      }
-      if (filterForm.value.hasOwnProperty("page")) {
-        data.page = filterForm.value.page;
-      }
-      if (filterForm.value.hasOwnProperty("limit")) {
-        data.limit = filterForm.value.limit;
-      }
-      if (filterForm.value.hasOwnProperty("filterQ")) {
-        data.filterQ = filterForm.value.filterQ;
-      }
-
-      defFilters.map((def) => {
-        const key = def.name;
-        let method = def.filter;
-
-        if (_.isObject(method)) {
-          method = method.method;
-        }
-
-        if (
-          (filterForm.value[key] == "" && method !== "NEQN") ||
-          (filterForm.value[key] == " " && method !== "NEQN") ||
-          !filterForm.value[key]
-        ) {
-          return;
-        }
-
-        if (method === "exec") {
-          data[key] = filterForm.value[key];
-          return;
-        }
-
-        if (method === "NEQN" && filterForm.value[key]) {
-          if (def?.prepareKey) {
-            data[
-              `${def?.prepareKey(key, filterForm.value[key])}`
-            ] = `${method}`;
-          } else {
-            data[`filter[${key}]`] = `${method}`;
-          }
-        } else {
-          const pre = def?.prepareFunc
-            ? def?.prepareFunc(filterForm.value[key], filterForm)
-            : filterForm.value[key];
-
-          if (pre == undefined) {
-            return;
-          }
-          if (def?.prepareKey) {
-            data[`${def?.prepareKey(key, pre, filterForm.value[key])}`] = pre;
-          } else if (method) {
-            data[`filter${method}[${key}]`] = pre;
-          } else {
-            data[`${key}`] = pre;
-          }
-        }
-      });
-
-      if (
-        (!Object.keys(data).length && !force) ||
-        (_.isEqual(data, filters.value) && !force)
-      ) {
-        return;
-      }
-      filters.value = data;
-      filtersHistory.value[route] = filterForm.value;
-      filtersHistoryForm.value[route] = data;
-
-      if (setRouter) {
-        router.push({
-          query: {
-            ...data,
-          },
+    () => cloneDeep(filters.value),
+    debounce((newVal) => {
+      if (withQueryParams)
+        router.replace({
+          query: pickBy(
+            newVal,
+            (value) => value !== "" && value !== null && value !== undefined
+          ),
         });
-      }
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  const clearFilters = () => {
-    filterForm.value = prepareForm();
-
-    if (setRouter) {
-      router.push({
-        query: {},
-      });
-    }
-  };
-
-  const currentFilter = computed(() => {
-    return filtersHistory.value.hasOwnProperty(route)
-      ? filtersHistory.value[route]
-      : {};
-  });
-
-  const currentFilterForm = computed(() => {
-    return filtersHistoryForm.value.hasOwnProperty(route)
-      ? filtersHistoryForm.value[route]
-      : {};
-  });
-
-  const parseQuery = () => {
-    Object.entries(useRoute().query).forEach(([key, val]) => {
-      let keys = key.match(/\[(.*?)\]/) ? key.match(/\[(.*?)\]/)[1] : null;
-      let value = val.match(/\((.*?)\)/) ? val.match(/\((.*?)\)/)[1] : null;
-      if (key && value) {
-        filterForm.value[keys] = value;
-      }
-    });
-  };
-  onMounted(() => {
-    if (!useRouter()?.options?.history?.state?.back) {
-      parseQuery();
-    }
-    setFilters();
-  });
-
-  onBeforeUnmount(() => {
-    router.push({ query: null });
-    clearFilters();
-  });
-
+    }, debounceMs)
+  );
   return {
     filters,
-    filterOptions,
-    filterForm: computed(() => filterForm.value),
-    setFilterField,
-    setFilters,
-    clearFilters,
-    filtersHistory,
-    currentFilter,
-    currentFilterForm,
-    defFilters,
+    resetFilterValues,
+    urlSerachParams,
   };
 };
-
-export default useFilters;

@@ -1,14 +1,15 @@
-import auth from "./auth";
-import categories from "./categories";
-import file from "./file";
-import image from "./image";
-import orderings from "./orderings";
-import posts from "./posts";
-import products from "./products";
-import productUsers from "./productUsers";
-import properties from "./properties";
-import propertyItems from "./propertyItems";
-import vendors from "./vendors";
+import auth from "./modules/auth";
+import categories from "./modules/categories";
+import file from "./modules/file";
+import image from "./modules/image";
+import orderings from "./modules/orderings";
+import posts from "./modules/posts";
+import products from "./modules/products";
+import productUsers from "./modules/productUsers";
+import properties from "./modules/properties";
+import propertyItems from "./modules/propertyItems";
+import rubrics from "./modules/rubrics";
+import vendors from "./modules/vendors";
 
 const api = {
   auth,
@@ -21,6 +22,7 @@ const api = {
   productUsers,
   properties,
   propertyItems,
+  rubrics,
   vendors,
 };
 

@@ -16,8 +16,16 @@
 import Aside from "../components/Aside.vue";
 import Header from "./Header.vue";
 
-onMounted(() => {
-  document.body.style.overflow = "hidden";
+// onMounted(() => {
+//   document.body.style.overflow = "hidden";
+// });
+
+useHead({
+  bodyAttrs: {
+    style: {
+      overflow: "hidden",
+    },
+  },
 });
 </script>
 

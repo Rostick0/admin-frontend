@@ -7,12 +7,8 @@
 @callback  - функция срабатывает послк получения данных
 @popup вывести алерт при ошибке
 */
-import _ from "lodash";
-import Utils, {
-  formatObjectReverse,
-  mergeObjectsData,
-  notify,
-} from "~~/utils/base";
+import uniqueId from "lodash/uniqueId";
+import Utils, { formatObjectReverse, mergeObjectsData } from "~/utils/base";
 
 import api from "~/api";
 
@@ -23,16 +19,15 @@ const useApi = async ({
   unwatchedFilters = {},
   requestParams = {},
   callback = null,
-  init = true,
+  init = false,
   afterCallback = () => {},
   headers = {},
   initialValue = null,
   afterInit = () => {},
   popup = true,
-  throttleMs = 300,
 } = {}) => {
   try {
-    const id = _.uniqueId();
+    const id = uniqueId();
     const data = useState(`data-${id}`, () => null);
     const loading = useState(`loading-${id}`, () => false);
     const error = useState(`error-${id}`, () => false);
@@ -72,6 +67,7 @@ const useApi = async ({
         if (keys?.includes("total")) {
           pre["current_page"] = data?.current_page;
           pre["per_page"] = data?.per_page;
+          pre["last_page"] = data?.last_page;
           pre["total"] = data?.total;
           meta.value = pre;
         }
@@ -103,6 +99,7 @@ const useApi = async ({
                 signal: signal.value,
               },
             };
+
             if (headers) {
               preParams["headers"] = headers;
             }
@@ -137,8 +134,6 @@ const useApi = async ({
         loading.value = false;
       } catch (error) {
         loading.value = false;
-        // console.error("get", error);
-        // notify(error);
       }
     };
 
@@ -187,15 +182,17 @@ const useApi = async ({
     }
 
     //При изменения фильров из вне
-    if (isReactive(filters.value)) {
-      watch(
-        [() => filters.value],
-        useThrottle(async () => {
-          await get({ ...params, ...filters });
-        }, throttleMs),
-        { deep: true }
-      );
-    }
+    onMounted(() => {
+      if (isReactive(filters.value)) {
+        watch(
+          [() => filters.value],
+          async () => {
+            await get({ ...params, ...filters });
+          },
+          { deep: true }
+        );
+      }
+    });
 
     return {
       data,

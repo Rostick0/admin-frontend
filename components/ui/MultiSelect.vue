@@ -11,6 +11,8 @@
 </template>
 
 <script setup>
+import debounce from "lodash/debounce";
+
 const props = defineProps({
   limit: {
     type: Number,
@@ -56,16 +58,16 @@ const currentSearchLimit = ref(props.limit);
 const searchString = ref("");
 const page = ref(1);
 
-const debounceHandleScrollToBottom = useDebounce(
+const debounceHandleScrollToBottom = debounce(
   handleScrollToBottom,
   props.debounceMs
 );
-const debounceHandleScrollToTop = useDebounce(
+const debounceHandleScrollToTop = debounce(
   handleScrollToTop,
   props.debounceMs
 );
 
-const debounceHandleSearch = useDebounce(handleSearch, props.debounceMs);
+const debounceHandleSearch = debounce(handleSearch, props.debounceMs);
 
 // Контекст данного селекта, может понадобится для кастомизации специфичных моментов
 const ctx = computed(() => ({

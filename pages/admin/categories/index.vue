@@ -4,7 +4,7 @@
       :data="computedData"
       :cols="cols"
       :meta="meta"
-      :filterForm="filterForm"
+      :filters="filters"
     ></Table>
     <!-- <pre>
       {{ data?.[1] }}
@@ -15,25 +15,27 @@
 <script setup>
 import TableActions from "@/components/table/TableActions.vue";
 
-const { filterForm, filters } = useFilters({
-  page: 1,
-  sort: 'id',
-  limit: 20,
+const { filters } = useFilters({
+  initialFilters: {
+    page: 1,
+    sort: "id",
+    limit: 20,
+  },
 });
 
 const { data, meta, get } = await useApi({
-  name: "products.getAll",
+  name: "categories.getAll",
   params: {
-    extends: "category,vendor",
+    // extends: "category,vendor",
   },
   filters: filters,
   init: false,
 });
+await get();
 
 const computedData = computed(() => {
   return data.value?.map(({ count, price, ...item }) => ({
     ...item,
-    price: (+price)?.toLocaleString(),
     count: item?.is_infinitely ? "ထ" : count,
   }));
 });
@@ -45,30 +47,11 @@ const cols = [
     resizable: true,
   },
   {
-    title: "Цена",
-    name: "price",
+    title: "Название",
+    name: "name",
     resizable: true,
   },
-  {
-    title: "Количество",
-    name: "count",
-    resizable: true,
-  },
-  {
-    title: "Просмотры",
-    name: "views",
-    resizable: true,
-  },
-  {
-    title: "Категория",
-    name: "category.name",
-    resizable: true,
-  },
-  {
-    title: "Категория",
-    name: "vendor.name",
-    resizable: true,
-  },
+  
   {
     name: "actions",
     renderComponent: () =>

@@ -70,9 +70,9 @@
                         class="d-flex align-items-center"
                         style="cursor: pointer"
                         v-if="
-                          filterForm?.sort == col.name &&
-                          filterForm?.sort &&
-                          filterForm?.sort[0] != '-'
+                          filters?.sort == col.name &&
+                          filters?.sort &&
+                          filters?.sort[0] != '-'
                         "
                         @click="changeSort?.('-' + col.name)"
                       >
@@ -87,9 +87,9 @@
                         class="d-flex align-items-center"
                         style="cursor: pointer"
                         v-else-if="
-                          filterForm?.sort?.slice?.(1) == col.name &&
-                          filterForm?.sort &&
-                          filterForm?.sort[0] == '-'
+                          filters?.sort?.slice?.(1) == col.name &&
+                          filters?.sort &&
+                          filters?.sort[0] == '-'
                         "
                         @click="changeSort?.('')"
                       >
@@ -166,9 +166,9 @@
                   <template v-if="!col?.can_not_sort && col.name != 'actions'">
                     <button
                       v-if="
-                        filterForm?.sort == col.name &&
-                        filterForm?.sort &&
-                        filterForm?.sort[0] != '-'
+                        filters?.sort == col.name &&
+                        filters?.sort &&
+                        filters?.sort[0] != '-'
                       "
                       @click="changeSort?.('-' + col.name)"
                     >
@@ -176,9 +176,9 @@
                     </button>
                     <button
                       v-else-if="
-                        filterForm?.sort?.slice?.(1) == col.name &&
-                        filterForm?.sort &&
-                        filterForm?.sort[0] == '-'
+                        filters?.sort?.slice?.(1) == col.name &&
+                        filters?.sort &&
+                        filters?.sort[0] == '-'
                       "
                       @click="changeSort?.('')"
                     >
@@ -219,9 +219,9 @@
                   <template v-if="!col?.can_not_sort && col.name != 'actions'">
                     <button
                       v-if="
-                        filterForm?.sort == col.name &&
-                        filterForm?.sort &&
-                        filterForm?.sort[0] != '-'
+                        filters?.sort == col.name &&
+                        filters?.sort &&
+                        filters?.sort[0] != '-'
                       "
                       @click="changeSort?.('-' + col.name)"
                     >
@@ -229,9 +229,9 @@
                     </button>
                     <button
                       v-else-if="
-                        filterForm?.sort?.slice?.(1) == col.name &&
-                        filterForm?.sort &&
-                        filterForm?.sort[0] == '-'
+                        filters?.sort?.slice?.(1) == col.name &&
+                        filters?.sort &&
+                        filters?.sort[0] == '-'
                       "
                       @click="changeSort?.('')"
                     >
@@ -271,15 +271,15 @@
             class="table-pagination"
             :total="meta?.total"
             :limit="meta?.per_page"
-            v-if="filterForm"
-            v-model:current-page="filterForm.page"
+            v-if="filters"
+            v-model:current-page="filters.page"
           />
           <div>
             <UiSelect
               class=""
               hideMessage
-              v-if="filterForm"
-              v-model="filterForm.limit"
+              v-if="filters"
+              v-model="filters.limit"
               model-value-is-number
               :options="[
                 {
@@ -312,7 +312,7 @@ const props = defineProps({
   data: Object,
   cols: Array,
   meta: Object,
-  filterForm: [Object, String, Array],
+  filters: [Object, String, Array],
 });
 
 watch(
@@ -337,7 +337,7 @@ const { cols, restore, mouseDownHandler, mouseDownAuto } = useDynamicTh(
 );
 
 const changeSort = (sort) => {
-  props.filterForm.sort = sort;
+  props.filters.sort = sort;
 };
 
 const getValueByName = (item, name) => {

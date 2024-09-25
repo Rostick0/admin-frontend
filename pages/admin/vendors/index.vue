@@ -5,7 +5,7 @@
       :data="computedData"
       :cols="cols"
       :meta="meta"
-      :filterForm="filterForm"
+      :filters="filters"
     ></Table>
     <!-- <pre>
       {{ data?.[1] }}
@@ -16,17 +16,19 @@
 <script setup>
 import TableActions from "@/components/table/TableActions.vue";
 
-const { filterForm, filters } = useFilters({
-  page: 1,
-  sort: 'id',
-  limit: 20,
+const { filters } = useFilters({
+  initialFilters: {
+    page: 1,
+    sort: "id",
+    limit: 20,
+  },
 });
 
 const { data, meta, get } = await useApi({
   name: "vendors.getAll",
   params: {},
   filters: filters,
-  init: false,
+  init: true,
 });
 
 const computedData = computed(() => {

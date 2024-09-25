@@ -1,6 +1,6 @@
-import useFetcher from "../utils/fetch";
+import useFetcher from "../../utils/fetch";
 
-const posts = {
+export default {
   get: async ({ id, params }) => useFetcher().get(`/posts/${id}`, params),
   delete: async ({ id, params }) => useFetcher().delete(`/posts/${id}`, params),
   update: async ({ id, data, params }) =>
@@ -8,5 +8,3 @@ const posts = {
   getAll: async ({ params }) => useFetcher().get(`/posts`, params),
   create: async ({ data }) => useFetcher().post(`/posts`, data),
 };
-
-export default posts;
