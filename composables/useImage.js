@@ -1,3 +1,4 @@
+// import { useToast } from "vue-toastification";
 import api from "~/api";
 
 export default () => {
@@ -17,41 +18,45 @@ export default () => {
     let data = [];
 
     for (let i = 0; i < images.length; i++) {
-      if (images[i]?.file && typeof images[i]?.id === "string") {
-        const image = await createImage(images[i]?.file);
-        data.push(image?.id);
+      if (images[i]?.file) {
+        try {
+          const image = await createImage(images[i]?.file);
+          data.push(image.id);
+        } catch (e) {
+          warningPopup(`Image dont upload: ${images[i]?.name}`);
+        }
       }
     }
 
     return data;
   };
 
-  const getImageIdFrom = async (image, oldImage) => {
-    return typeof image !== "string"
-      ? await createImage(image).then((resp) => resp?.id)
-      : oldImage?.id;
+  const getImageFrom = async (image) => {
+    if (image?.toString() === "[object File]") {
+      const resp = await createImage(image);
+
+      if (resp?.error) {
+        warningPopup("Image dont upload");
+        return;
+      }
+
+      return resp;
+    }
+    return image;
   };
 
-  const { $toast } = useNuxtApp();
-  const getImageIdsFrom = async (images, oldImages) => {
-    try {
-      const imagesNew = images?.filter?.((i) => typeof i.id === "string") ?? [];
-      const newIds = await createImages(imagesNew);
-      const idsOld =
-        images
-          ?.filter((i) => typeof i === "string")
-          .map((i) => oldImages.find((pI) => pI.image.path === i).image?.id) ??
-        [];
-      return [...newIds, ...idsOld]?.join() ?? "";
-    } catch (error) {
-      $toast.error(error?.data?.errors.image.join("\n"));
-    }
+  const getImageIdsFrom = async (images) => {
+    const newIds = await createImages(images);
+    const idsOld =
+      images?.filter?.((i) => !i?.file)?.map((item) => item?.id) ?? [];
+
+    return [...idsOld, ...newIds].join();
   };
 
   return {
     createImage,
     createImages,
-    getImageIdFrom,
+    getImageFrom,
     getImageIdsFrom,
   };
 };

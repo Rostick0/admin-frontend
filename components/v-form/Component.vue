@@ -18,7 +18,7 @@
     v-bind="field.bind"
     :error-message="errorMessage"
   />
-  <UiCheckbox
+  <VFromSwitch
     v-else-if="field.type == 'checkbox'"
     v-model="model"
     v-bind="field.bind"
@@ -30,6 +30,13 @@
     v-bind="field.bind"
     :error-message="errorMessage"
     :name="field.name"
+  />
+
+  <UiTextarea
+    v-else-if="field.type == 'switch'"
+    v-model="model"
+    v-bind="field.bind"
+    :error-message="errorMessage"
   />
 
   <UiDatePicker
@@ -54,6 +61,13 @@
 
   <UiMPhotoLoader
     v-else-if="field.type == 'multiple-photo-loader'"
+    v-model="model"
+    v-bind="field.bind"
+    :error-message="errorMessage"
+  />
+
+  <VFormCkeditor
+    v-else-if="field.type == 'ckeditor'"
     v-model="model"
     v-bind="field.bind"
     :error-message="errorMessage"

@@ -1,5 +1,8 @@
 <template>
-  <PagesPostMutation :dataMutation="dataMutation" />
+  <PagesPostMutation
+    :pageTitle="`Создание поста`"
+    :dataMutation="dataMutation"
+  />
 </template>
 
 <script setup>

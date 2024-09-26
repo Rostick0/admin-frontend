@@ -12,9 +12,12 @@
             <UiStack flex-direction="column" gap="3">
               <VFormComponent :field="title" />
               <VFormComponent :field="description" />
-              <VFormComponent :field="content" />
-              <VFormComponent :field="rubric" />
-              <VFormComponent :field="source" />
+              <VFormComponent :field="price" />
+              <VFormComponent :field="old_price" />
+              <VFormComponent :field="count" />
+              <VFormComponent :field="is_infinitely" />
+              <VFormComponent :field="vendor" />
+              <VFormComponent :field="category" />
               <VFormComponent :field="images" />
               <VFormComponent :field="files" />
               <VFormComponent :field="status" />
@@ -42,7 +45,6 @@ const { data, dataMutation, ...props } = defineProps({
   dataMutation: Function,
   pageTitle: String,
 });
-//         'is_private',
 
 const { handleSubmit, setErrors } = useForm();
 
@@ -70,29 +72,66 @@ const description = ref({
   },
 });
 
-const content = ref({
+const price = ref({
   type: "textarea",
-  name: "content",
+  name: "price",
   rules: "required",
-  modelValue: data?.content,
+  modelValue: data?.price,
 
   bind: {
-    label: "Описание*",
-    placeholder: "Введите описание",
+    label: "Цена*",
+    placeholder: "Введите цену",
+    dataMaska: maskaOnlyNumber.mask,
+    maskaTokens: maskaOnlyNumber.tokens,
   },
 });
 
-const rubric = ref({
-  type: "select",
-  name: "rubric",
+const old_price = ref({
+  type: "textarea",
+  name: "old_price",
   rules: "required",
-  modelValue: data?.rubric,
+  modelValue: data?.old_price,
 
   bind: {
-    label: "Рубрика*",
-    placeholder: "Введите название",
+    label: "Старая цена*",
+    dataMaska: maskaOnlyNumber.mask,
+    maskaTokens: maskaOnlyNumber.tokens,
+  },
+});
+
+const count = ref({
+  type: "text",
+  name: "count",
+  // rules: "max:255",
+  modelValue: data?.count,
+
+  bind: {
+    label: "Количество",
+    placeholder: "Введите количество",
+  },
+});
+
+const is_infinitely = ref({
+  type: "switch",
+  name: "is_infinitely",
+  modelValue: data?.is_infinitely,
+
+  bind: {
+    label: "Бесконечное количество",
+  },
+});
+
+const vendor = ref({
+  type: "select",
+  name: "vendor",
+  rules: "required",
+  modelValue: data?.vendor,
+
+  bind: {
+    label: "Производитель*",
+    placeholder: "Введите производителя",
     searchFn: async (_ctx, search, limit, page) =>
-      await getRubricsOptions({
+      await getVendorsOptions({
         limit,
         page,
         "filterLIKE[name]": search,
@@ -100,15 +139,21 @@ const rubric = ref({
   },
 });
 
-const source = ref({
-  type: "text",
-  name: "source",
-  rules: "max:255",
-  modelValue: data?.source,
+const category = ref({
+  type: "select",
+  name: "category",
+  rules: "required",
+  modelValue: data?.category,
 
   bind: {
-    label: "Источник",
-    placeholder: "Введите ссылку",
+    label: "Категория*",
+    placeholder: "Введите категорию",
+    searchFn: async (_ctx, search, limit, page) =>
+      await getCategoriesOptions({
+        limit,
+        page,
+        "filterLIKE[name]": search,
+      }),
   },
 });
 
@@ -171,8 +216,8 @@ const onSubmit = handleSubmit(
     const res = await dataMutation({
       ...values,
       images: images_load,
-      rubric: rubric?.id,
-      status: status?.id,
+      vendor: vendor?.id,
+      category: rubric?.id,
     });
 
     if (res?.error) {
@@ -192,9 +237,21 @@ const onSubmit = handleSubmit(
   invalidValuesForm
 );
 
-async function getRubricsOptions(params) {
+async function getVendorsOptions(params) {
   try {
-    const { data } = await api.rubrics.getAll({
+    const { data } = await api.vendors.getAll({
+      params: params,
+    });
+
+    return data?.map((item) => ({ id: item.id, value: item.name, item }));
+  } catch (e) {
+    console.log(error);
+  }
+}
+
+async function getCategoriesOptions(params) {
+  try {
+    const { data } = await api.categories.getAll({
       params: params,
     });
 
