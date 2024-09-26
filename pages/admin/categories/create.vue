@@ -1,16 +1,13 @@
 <template>
   <AdminLayout>
-    <template #title>
-      <div :title="`Редактирование производителя - ${data?.name}`">
-        Производитель #{{ data?.id }}
-      </div>
-    </template>
     <UiStack flex-direction="column" gap="2">
       <UiCard padding="4">
         <UiStack flex-direction="column" gap="2">
           <form @submit="onSubmit">
             <UiStack flex-direction="column" gap="3">
               <VFormComponent :field="name" />
+              <VFormComponent :field="description" />
+              <VFormComponent :field="parent" />
               <UiStack>
                 <UiButton>Сохранить</UiButton>
               </UiStack>
@@ -26,22 +23,37 @@
 import { useForm } from "vee-validate";
 import api from "~/api";
 
-const { data, get } = await useApi({
-  name: "rubrics.get",
-  requestParams: {
-    id: useRoute().params.id,
-  },
-});
-
-await get();
-
 const { handleSubmit, setErrors } = useForm();
 
 const name = ref({
   type: "text",
+  modelValue: "",
   name: "name",
   rules: "required",
-  modelValue: data.value?.name,
+
+  bind: {
+    label: "Название*",
+    placeholder: "Введите название",
+  },
+});
+
+const description = ref({
+  type: "textarea",
+  name: "description",
+  rules: "required",
+  modelValue: null,
+
+  bind: {
+    label: "Описание*",
+    placeholder: "Введите описание",
+  },
+});
+
+const parent = ref({
+  type: "select",
+  name: "parent",
+  rules: "required",
+  modelValue: null,
 
   bind: {
     label: "Название*",
@@ -50,9 +62,9 @@ const name = ref({
 });
 
 const onSubmit = handleSubmit(async ({ ...values }) => {
-  const res = await api.rubrics.update({
-    id: useRoute().params.id,
+  const res = await api.categories.create({
     data: {
+      parent_id: parent?.id,
       ...values,
     },
   });
@@ -72,5 +84,3 @@ const onSubmit = handleSubmit(async ({ ...values }) => {
   });
 }, invalidValuesForm);
 </script>
-
-<style></style>

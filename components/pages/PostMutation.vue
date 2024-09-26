@@ -1,31 +1,4 @@
 <template>
-  <PagesPostMutation :data="data" :dataMutation="dataMutation" />
-</template>
-
-<script setup>
-import api from "~/api";
-
-const id = useRoute().params.id;
-
-const { data, get } = await useApi({
-  name: "posts.get",
-  params: {
-    extends: "rubric,files.file,images.image",
-  },
-  requestParams: {
-    id,
-  },
-});
-await get();
-console.log(data.value)
-
-const dataMutation = async (data) =>
-  await api.posts.update({
-    id,
-    data,
-  });
-</script>
-<!-- <template>
   <AdminLayout>
     <template #title>
       <div :title="`Редактирование поста - ${data?.title}`">
@@ -61,27 +34,32 @@ const dataMutation = async (data) =>
 import { useForm } from "vee-validate";
 import api from "~/api";
 
-const { data, get } = await useApi({
-  name: "posts.get",
-  params: {
-    extends: "rubric,files.file,images.image",
-  },
-  requestParams: {
-    id: useRoute().params.id,
-  },
+const { data, dataMutation, ...props } = defineProps({
+  data: Object,
+  dataMutation: Function,
+  title: String,
 });
+console.log(data);
+// const { data, get } = await useApi({
+//   name: "posts.get",
+//   params: {
+//     extends: "rubric,files.file,images.image",
+//   },
+//   requestParams: {
+//     id: useRoute().params.id,
+//   },
+// });
 
-await get();
-//         'status',
+// await get();
 //         'is_private',
-//         'date_publication',
+
 const { handleSubmit, setErrors } = useForm();
 
 const title = ref({
   type: "text",
   name: "title",
-  rules: "required",
-  modelValue: data.value?.title,
+  rules: "required|max:255",
+  modelValue: data?.title,
 
   bind: {
     label: "Название*",
@@ -92,8 +70,8 @@ const title = ref({
 const description = ref({
   type: "textarea",
   name: "description",
-  rules: "required",
-  modelValue: data.value?.description,
+  rules: "required|max:255",
+  modelValue: data?.description,
 
   bind: {
     label: "Описание*",
@@ -105,7 +83,7 @@ const content = ref({
   type: "textarea",
   name: "content",
   rules: "required",
-  modelValue: data.value?.content,
+  modelValue: data?.content,
 
   bind: {
     label: "Описание*",
@@ -117,7 +95,7 @@ const rubric = ref({
   type: "select",
   name: "rubric",
   rules: "required",
-  modelValue: data.value?.rubric,
+  modelValue: data?.rubric,
 
   bind: {
     label: "Рубрика*",
@@ -134,8 +112,8 @@ const rubric = ref({
 const source = ref({
   type: "text",
   name: "source",
-  rules: "required|max:255",
-  modelValue: data.value?.source,
+  rules: "max:255",
+  modelValue: data?.source,
 
   bind: {
     label: "Источник",
@@ -146,10 +124,11 @@ const source = ref({
 const images = ref({
   type: "multiple-photo-loader",
   name: "images",
-  modelValue: data.value?.images?.map((i) => ({
-    ...i.image,
-    path: i?.image?.path + "?w=350&h=350",
-  })),
+  modelValue:
+    data?.images?.map((i) => ({
+      ...i.image,
+      path: i?.image?.path + "?w=350&h=350",
+    })) ?? [],
 
   bind: {
     label: "Фотографии",
@@ -159,10 +138,11 @@ const images = ref({
 const files = ref({
   type: "multiple-file-loader",
   name: "files",
-  modelValue: data.value?.files?.map((i) => ({
-    ...i.file,
-    path: i?.file?.path,
-  })),
+  modelValue:
+    data?.files?.map((i) => ({
+      ...i.file,
+      path: i?.file?.path,
+    })) ?? [],
 
   bind: {
     label: "Фотографии",
@@ -172,7 +152,7 @@ const files = ref({
 const status = ref({
   type: "select",
   name: "status",
-  modelValue: statusViewsOptions.find((name) => name === data.value?.status),
+  modelValue: statusViewsOptions.find((name) => name === data?.status),
 
   bind: {
     label: "Статус",
@@ -181,9 +161,9 @@ const status = ref({
 });
 
 const date_publication = ref({
-  type: "multiple-file-loader",
-  name: "files",
-  modelValue: data.value?.date_publication,
+  type: "date",
+  name: "date_publication",
+  modelValue: data?.date_publication,
 
   bind: {
     label: "Дата публикации",
@@ -191,12 +171,9 @@ const date_publication = ref({
 });
 
 const onSubmit = handleSubmit(async ({ parent, ...values }) => {
-  const res = await api.categories.update({
-    id: useRoute().params.id,
-    data: {
-      ...values,
-      parent_id: parent?.id,
-    },
+  const res = await dataMutation({
+    ...values,
+    parent_id: parent?.id,
   });
 
   if (res?.error) {
@@ -227,4 +204,4 @@ async function getRubricsOptions(params) {
 }
 </script>
 
-<style></style> -->
+<style></style>

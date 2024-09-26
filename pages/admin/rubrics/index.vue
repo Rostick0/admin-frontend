@@ -6,15 +6,18 @@
       :cols="cols"
       :meta="meta"
       :filters="filters"
-    ></Table>
-    <!-- <pre>
-      {{ data?.[1] }}
-    </pre> -->
+    />
+    <AdminComponentsModalDelete
+      @confirm="deleteConfirm"
+      @cancel="deleteCancel"
+    />
   </AdminLayout>
 </template>
 
 <script setup>
 import TableActions from "@/components/table/TableActions.vue";
+
+const { close, open } = useModal({ name: "data-delete" });
 
 const { filters } = useFilters({
   initialFilters: {
@@ -36,6 +39,12 @@ const computedData = computed(() => {
     ...item,
     created_at: new Date(created_at).toLocaleString(),
   }));
+});
+
+const { deleteId, deleteConfirm, deleteCancel } = useDeleteConfirm({
+  apiName: "rubrics",
+  get,
+  close,
 });
 
 const cols = [
@@ -60,33 +69,20 @@ const cols = [
       h(TableActions, {
         onUpdate(id) {
           navigateTo({
-            name: "admin-vendors-id",
+            name: "admin-rubrics-id",
             params: {
               id,
             },
           });
         },
         async onDelete(id) {
-          // await api.post.delete({ id });
-          // await get();
-          console.log(id);
+          open();
+
+          deleteId.value = id;
         },
         id: 1,
       }),
     width: 30,
   },
 ];
-
-// watch(() => data.value, function () {
-
-//   console.log(data.value);
-// })
-
-// const cols = ["id", "price", "completed"].map((item) => ({
-//   title: item,
-//   name: item,
-//   resizable: true,
-// }));
 </script>
-
-<style></style>

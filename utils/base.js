@@ -337,6 +337,13 @@ function declination(number, titles = [" год", " года", " лет"]) {
 const log = (...all) => {
   console.error(...all);
 };
+
+export const statusViews = ["publish", "pending", "draft", "future"];
+export const statusViewsOptions = statusViews.map((name) => ({
+  id: name,
+  name,
+}));
+
 const Utils = {
   log,
   declination,

@@ -19,14 +19,11 @@
       :meta="meta"
       :filters="filters"
       title="Товары"
-    ></Table>
+    />
     <AdminComponentsModalDelete
       @confirm="deleteConfirm"
       @cancel="deleteCancel"
     />
-    <!-- <pre>
-      {{ data?.[1] }}
-    </pre> -->
   </AdminLayout>
 </template>
 
@@ -127,7 +124,6 @@ const { data, meta, get } = await useApi({
     extends: "category,vendor",
   },
   filters,
-  init: false,
 });
 await get();
 
@@ -144,27 +140,6 @@ const { deleteId, deleteConfirm, deleteCancel } = useDeleteConfirm({
   get,
   close,
 });
-// const deleteId = ref(0);
-
-// const deleteConfirm = async () => {
-//   const res = await api['products'].delete({
-//     id: deleteId.value,
-//   });
-
-//   if (res?.error) {
-//     warningPopup(res?.errorResponse?.data?.message);
-//   } else {
-//     get();
-//   }
-
-//   close();
-//   deleteId.value = null;
-// };
-
-// const deleteCancel = () => {
-//   close();
-//   deleteId.value = null;
-// };
 
 const cols = [
   {
@@ -218,25 +193,12 @@ const cols = [
           open();
 
           deleteId.value = id;
-          // await api.post.delete({ id });
-          // await get();
         },
         id: 1,
       }),
     width: 30,
   },
 ];
-
-// watch(() => data.value, function () {
-
-//   console.log(data.value);
-// })
-
-// const cols = ["id", "price", "completed"].map((item) => ({
-//   title: item,
-//   name: item,
-//   resizable: true,
-// }));
 
 async function getCategoriesOptions(params) {
   try {
@@ -262,5 +224,3 @@ async function getVendorsOptions(params) {
   }
 }
 </script>
-
-<style></style>

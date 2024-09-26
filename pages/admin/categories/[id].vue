@@ -11,6 +11,9 @@
           <form @submit="onSubmit">
             <UiStack flex-direction="column" gap="3">
               <VFormComponent :field="name" />
+              <VFormComponent :field="description" />
+              <VFormComponent :field="parent" />
+
               <UiStack>
                 <UiButton>Сохранить</UiButton>
               </UiStack>
@@ -27,7 +30,10 @@ import { useForm } from "vee-validate";
 import api from "~/api";
 
 const { data, get } = await useApi({
-  name: "rubrics.get",
+  name: "categories.get",
+  params: {
+    extends: "parent",
+  },
   requestParams: {
     id: useRoute().params.id,
   },
@@ -36,6 +42,7 @@ const { data, get } = await useApi({
 await get();
 
 const { handleSubmit, setErrors } = useForm();
+
 
 const name = ref({
   type: "text",
@@ -49,11 +56,36 @@ const name = ref({
   },
 });
 
-const onSubmit = handleSubmit(async ({ ...values }) => {
-  const res = await api.rubrics.update({
+const description = ref({
+  type: "textarea",
+  name: "description",
+  rules: "required",
+  modelValue: data.value?.description,
+
+  bind: {
+    label: "Описание*",
+    placeholder: "Введите описание",
+  },
+});
+
+const parent = ref({
+  type: "select",
+  name: "parent",
+  rules: "required",
+  modelValue: data.value?.parent,
+
+  bind: {
+    label: "Название*",
+    placeholder: "Введите название",
+  },
+});
+
+const onSubmit = handleSubmit(async ({ parent, ...values }) => {
+  const res = await api.categories.update({
     id: useRoute().params.id,
     data: {
       ...values,
+      parent_id: parent?.id,
     },
   });
 
