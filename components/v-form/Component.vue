@@ -18,7 +18,7 @@
     v-bind="field.bind"
     :error-message="errorMessage"
   />
-  <VFromSwitch
+  <UiCheckbox
     v-else-if="field.type == 'checkbox'"
     v-model="model"
     v-bind="field.bind"
@@ -32,7 +32,7 @@
     :name="field.name"
   />
 
-  <UiTextarea
+  <VFormSwitch
     v-else-if="field.type == 'switch'"
     v-model="model"
     v-bind="field.bind"

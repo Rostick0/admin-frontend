@@ -22,9 +22,6 @@
         <div class="photoloader__title">Нажмите для загрузки фото</div>
         <div class="photoloader__subtitle">PNG, JPG, GIF максимум 3MB</div>
       </label>
-      <!-- {{ modelValue }} -->
-      <!-- v-for="item in modelValue?.sort?.((a, b) => a?.order - b?.order)" -->
-
       <div class="photoloader__images" @mouseup="dragElem = null">
         <template v-for="item in modelValue" :key="item.id">
           <div @mousedown="dragElem = item">
@@ -191,19 +188,20 @@ const handleRemove = (item) => {
 
   &__images {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(auto-fill, 200px);
     grid-gap: 1rem;
     width: 100%;
   }
 
   &__image {
-    padding-top: 100%;
+    border-radius: 12px;
+    padding-top: 66%;
     position: relative;
 
     &_delete {
       background-color: rgb(var(--color-white));
       color: rgb(var(--color-red));
-      border-radius: 0.33rem;
+      border-radius: 4px;
       cursor: pointer;
       display: flex;
       align-items: center;

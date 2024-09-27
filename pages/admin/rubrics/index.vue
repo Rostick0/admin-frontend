@@ -1,5 +1,8 @@
 <template>
   <AdminLayout>
+    <NuxtLink class="d-inline-flex mb-1" to="/admin/rubrics/create">
+      <UiButton>Создать</UiButton>
+    </NuxtLink>
     <Table
       title="Производители"
       :data="computedData"

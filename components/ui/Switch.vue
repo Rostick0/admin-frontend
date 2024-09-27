@@ -4,8 +4,8 @@
       <div class="switch__icon_circle"></div>
     </div>
     <div class="switch__label">
-      <template v-if="label">
-        {{ label }}
+      <template v-if="title">
+        {{ title }}
       </template>
       <template v-else>
         <slot />
@@ -17,7 +17,7 @@
 <script setup>
 const props = defineProps({
   modelValue: Boolean,
-  label: String,
+  title: String,
 });
 
 const emits = defineEmits(["update:modelValue"]);
@@ -25,12 +25,13 @@ const emits = defineEmits(["update:modelValue"]);
 
 <style lang="scss" scoped>
 .switch {
-  display: flex;
+  cursor: pointer;
+  display: inline-flex;
   align-items: center;
   column-gap: 10px;
 
   &__icon {
-    border: 1px solid var(--color-basic);
+    border: 1px solid rgb(var(--color-blue-light));
     border-radius: 16px;
     cursor: pointer;
     display: flex;
@@ -42,17 +43,17 @@ const emits = defineEmits(["update:modelValue"]);
     height: 20px;
 
     &.active {
-      background-color: var(--color-basic);
+      background-color: rgb(var(--color-blue-light));
 
       .switch__icon_circle {
-        background-color: var(--color-white);
+        background-color: rgb(var(--color-white));
         left: calc(100% - 3px);
         transform: translateX(-100%);
       }
     }
 
     &_circle {
-      background-color: var(--color-basic);
+      background-color: rgb(var(--color-blue-light));
       border-radius: 50%;
       transition: 0.3s;
       position: absolute;

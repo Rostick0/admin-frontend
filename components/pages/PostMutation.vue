@@ -19,7 +19,7 @@
               <VFormComponent :field="files" />
               <VFormComponent :field="status" />
               <VFormComponent
-                v-if="status.modelValue.name === 'future'"
+                v-if="status.modelValue?.name === 'future'"
                 :field="date_publication"
               />
               <UiStack>
@@ -73,7 +73,7 @@ const description = ref({
 const content = ref({
   type: "textarea",
   name: "content",
-  rules: "required",
+  rules: "required|max:65536",
   modelValue: data?.content,
 
   bind: {
@@ -116,7 +116,7 @@ const images = ref({
   type: "multiple-photo-loader",
   name: "images",
   modelValue:
-    data?.images?.map((i) => ({
+    data?.images?.map?.((i) => ({
       ...i.image,
       path: i?.image?.path + "?w=350&h=350",
     })) ?? [],
@@ -130,7 +130,7 @@ const files = ref({
   type: "multiple-file-loader",
   name: "files",
   modelValue:
-    data?.files?.map((i) => ({
+    data?.files?.map?.((i) => ({
       ...i,
       path: i?.file?.path,
     })) ?? [],

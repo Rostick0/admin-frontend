@@ -6,6 +6,7 @@
     :rightIcon="rightIcon"
   >
     <UiSwitch
+      :title="title"
       :modelValue="modelValue"
       @update:modelValue="(val) => emits('update:modelValue', val)"
       :placeholder="placeholder"
@@ -15,11 +16,12 @@
 
 <script setup lang="ts">
 interface Props {
-  modelValue?: string;
+  modelValue?: boolean;
   invalid?: boolean;
   rightIcon?: any;
   message?: string;
   label?: string;
+  title?: string;
   maska?: any;
   dataMaskReserved?: boolean;
   maskaTokens?: any;

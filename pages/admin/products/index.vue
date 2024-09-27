@@ -13,6 +13,9 @@
         :field="vendor_id"
       />
     </AdminFilter>
+    <NuxtLink class="d-inline-flex mb-1" to="/admin/products/create">
+      <UiButton>Создать</UiButton>
+    </NuxtLink>
     <Table
       :data="computedData"
       :cols="cols"

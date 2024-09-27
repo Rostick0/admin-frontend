@@ -1,11 +1,9 @@
 <template>
   <AdminLayout>
-    <Table
-      :data="computedData"
-      :cols="cols"
-      :meta="meta"
-      :filters="filters"
-    />
+    <NuxtLink class="d-inline-flex mb-1" to="/admin/categories/create">
+      <UiButton>Создать</UiButton>
+    </NuxtLink>
+    <Table :data="computedData" :cols="cols" :meta="meta" :filters="filters" />
     <AdminComponentsModalDelete
       @confirm="deleteConfirm"
       @cancel="deleteCancel"

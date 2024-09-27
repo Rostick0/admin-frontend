@@ -14,8 +14,8 @@
               <VFormComponent :field="description" />
               <VFormComponent :field="price" />
               <VFormComponent :field="old_price" />
-              <VFormComponent :field="count" />
               <VFormComponent :field="is_infinitely" />
+              <VFormComponent :field="count" v-if="is_infinitely.modelValue" />
               <VFormComponent :field="vendor" />
               <VFormComponent :field="category" />
               <VFormComponent :field="images" />
@@ -73,7 +73,7 @@ const description = ref({
 });
 
 const price = ref({
-  type: "textarea",
+  type: "text",
   name: "price",
   rules: "required",
   modelValue: data?.price,
@@ -87,7 +87,7 @@ const price = ref({
 });
 
 const old_price = ref({
-  type: "textarea",
+  type: "text",
   name: "old_price",
   rules: "required",
   modelValue: data?.old_price,
@@ -96,6 +96,16 @@ const old_price = ref({
     label: "Старая цена*",
     dataMaska: maskaOnlyNumber.mask,
     maskaTokens: maskaOnlyNumber.tokens,
+  },
+});
+
+const is_infinitely = ref({
+  type: "switch",
+  name: "is_infinitely",
+  modelValue: data?.is_infinitely,
+
+  bind: {
+    title: "Бесконечное количество",
   },
 });
 
@@ -108,16 +118,6 @@ const count = ref({
   bind: {
     label: "Количество",
     placeholder: "Введите количество",
-  },
-});
-
-const is_infinitely = ref({
-  type: "switch",
-  name: "is_infinitely",
-  modelValue: data?.is_infinitely,
-
-  bind: {
-    label: "Бесконечное количество",
   },
 });
 
@@ -176,7 +176,7 @@ const files = ref({
   name: "files",
   modelValue:
     data?.files?.map((i) => ({
-      ...i.file,
+      ...i,
       path: i?.file?.path,
     })) ?? [],
 
@@ -230,7 +230,7 @@ const onSubmit = handleSubmit(
 
     nextTick(() => {
       navigateTo({
-        name: "admin-posts",
+        name: "admin-products",
       });
     });
   },
