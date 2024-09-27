@@ -22,7 +22,7 @@
               <VFormComponent :field="files" />
               <VFormComponent :field="status" />
               <VFormComponent
-                v-if="status.modelValue.name === 'future'"
+                v-if="status.modelValue?.name === 'future'"
                 :field="date_publication"
               />
               <UiStack>
@@ -161,9 +161,9 @@ const images = ref({
   type: "multiple-photo-loader",
   name: "images",
   modelValue:
-    data?.images?.map((i) => ({
-      ...i.image,
-      path: i?.image?.path + "?w=350&h=350",
+    data?.images?.map((item, i) => ({
+      ...item.image,
+      path: item?.image?.path + "?w=350&h=350",
     })) ?? [],
 
   bind: {
@@ -181,7 +181,7 @@ const files = ref({
     })) ?? [],
 
   bind: {
-    label: "Фотографии",
+    label: "Файлы",
   },
 });
 
@@ -243,7 +243,7 @@ async function getVendorsOptions(params) {
       params: params,
     });
 
-    return data?.map((item) => ({ id: item.id, value: item.name, item }));
+    return data?.map((item) => ({ id: item.id, value: item?.name, item }));
   } catch (e) {
     console.log(error);
   }
@@ -255,7 +255,7 @@ async function getCategoriesOptions(params) {
       params: params,
     });
 
-    return data?.map((item) => ({ id: item.id, value: item.name, item }));
+    return data?.map((item) => ({ id: item.id, value: item?.name, item }));
   } catch (e) {
     console.log(error);
   }

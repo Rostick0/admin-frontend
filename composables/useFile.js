@@ -17,7 +17,7 @@ export default () => {
     let data = [];
 
     for (let i = 0; i < files.length; i++) {
-      if (files[i]?.file) {
+      if (files[i]?.file?.toString() === "[object File]") {
         try {
           const file = await createFile(files[i]?.file);
           data.push(file.id);
@@ -46,7 +46,9 @@ export default () => {
 
   const getFileIdsFrom = async (files) => {
     const newIds = await createFiles(files);
-    const idsOld = files?.filter?.((i) => !i?.file)?.map((item) => item?.id);
+    const idsOld = files
+      ?.filter?.((i) => i?.file?.toString() !== "[object File]")
+      ?.map((item) => item?.file?.id);
 
     return [...idsOld, ...newIds].join();
   };

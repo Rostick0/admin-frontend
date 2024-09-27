@@ -131,12 +131,12 @@ const files = ref({
   name: "files",
   modelValue:
     data?.files?.map((i) => ({
-      ...i.file,
+      ...i,
       path: i?.file?.path,
     })) ?? [],
 
   bind: {
-    label: "Фотографии",
+    label: "Файлы",
   },
 });
 
@@ -163,14 +163,17 @@ const date_publication = ref({
 });
 
 const { getImageIdsFrom } = useImage();
+const { getFileIdsFrom } = useFile();
 
 const onSubmit = handleSubmit(
   async ({ rubric, images, files, status, ...values }) => {
     const images_load = await getImageIdsFrom(images);
+    const files_load = await getFileIdsFrom(files);
 
     const res = await dataMutation({
       ...values,
       images: images_load,
+      files: files_load,
       rubric: rubric?.id,
       status: status?.id,
     });

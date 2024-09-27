@@ -1,69 +1,38 @@
 <template>
-  <UiControl
-    :label="label"
-    :invalid="!!errorMessage || invalid"
-    :message="errorMessage || message"
-    :rightIcon="rightIcon"
-  >
-    <UiStack flex="same-all" gap="2" flexDirection="column">
-      <label
-        class="control__photoloader photoloader__block"
-        :class="{ error: errorMessage }"
-      >
-        <input
-          @change="handleOnFileChange"
-          @click="$event.target.value = null"
-          v-bind="$attrs"
-          class="photoloader__input"
-          type="file"
-          accept="image/png,image/jpeg,image/jpg,image/gif"
-        />
-        <!-- <img class='photoloader__image' src="/img/icons/upload.svg" alt="" /> -->
-        <div class="photoloader__title">Нажмите для загрузки фото</div>
-        <div class="photoloader__subtitle">PNG, JPG, GIF максимум 3MB</div>
-      </label>
-      <!-- {{ modelValue }} -->
-      <!-- v-for="item in modelValue?.sort?.((a, b) => a?.order - b?.order)" -->
-
-      <div class="photoloader__images" @mouseup="dragElem = null">
-        <template v-for="item in modelValue" :key="item.id">
-          <div @mousedown="dragElem = item">
-            <UiDraggable>
-              <template #willselect>
-                <div
-                  class="photoloader__image"
-                  @mouseup="
-                    dragElem &&
-                      item.id != dragElem.id &&
-                      changeOrder(dragElem, item)
-                  "
-                >
-                  <div
-                    class="photoloader__image_delete"
-                    @click="handleRemove(item)"
-                  >
-                    ✖
-                  </div>
-                  <img
-                    class="photoloader__img"
-                    :src="item?.path"
-                    alt="Ошибка загрузки"
-                  />
-                </div>
-              </template>
-              <template #selected>
-                <img :src="item?.path" alt="Ошибка загрузки" />
-              </template>
-            </UiDraggable>
+  <UiStack flex="same-all" gap="2" flexDirection="column">
+    <label
+      class="control__fileloader fileloader__block"
+      :class="{ error: errorMessage }"
+    >
+      <input
+        @change="handleOnFileChange"
+        @click="$event.target.value = null"
+        v-bind="$attrs"
+        class="fileloader__input"
+        type="file"
+      />
+      <div class="fileloader__title">Нажмите для загрузки файлов</div>
+    </label>
+    <div class="fileloader__images">
+      <div class="fileloader__image" v-for="item in modelValue" :key="item.id">
+        <div class="fileloader__image_delete" @click="handleRemove(item)">
+          ✖
+        </div>
+        <div class="fileloader__content">
+          <div class="fileloader__name">
+            {{ item?.file?.name }}
           </div>
-        </template>
+          <a class="fileloader__link" :href="item?.path" target="_blank"
+            >Show</a
+          >
+        </div>
       </div>
-    </UiStack>
-  </UiControl>
+    </div>
+  </UiStack>
 </template>
 
 <script setup>
-import debounce from "lodash/debounce";
+// import debounce from "lodash/debounce";
 import { size } from "@vee-validate/rules";
 import { v4 } from "uuid";
 
@@ -76,7 +45,6 @@ const emits = defineEmits(["update:modelValue", "remove", "setError"]);
 const props = defineProps({
   modelValue: [String, Object, Array],
   invalid: Boolean,
-  rightIcon: String,
   message: String,
   label: String,
   placeholder: String,
@@ -92,19 +60,17 @@ const props = defineProps({
   forceDeps: Boolean,
 });
 
-const dragElem = ref();
+// const dragElem = ref();
 
-const changeOrder = debounce((dragElemArg, el) => {
-  const files = [...props.modelValue];
+// const changeOrder = debounce((dragElemArg, el) => {
+//   const files = [...props.modelValue];
+//   const tmpOrder = files.find((i) => i.id == dragElemArg.id).order;
+//   files.find((i) => i.id == dragElemArg.id).order = el.order;
+//   files.find((i) => i.id == el.id).order = tmpOrder;
 
-  const first = files.findIndex((i) => i.id == dragElemArg.id);
-  const second = files.findIndex((i) => i.id == el.id);
-
-  [files[first], files[second]] = [files[second], files[first]];
-
-  emits("update:modelValue", files);
-  dragElem.value = null;
-});
+//   emits("update:modelValue", files);
+//   dragElem.value = null;
+// });
 
 const handleOnFileChange = (e) => {
   const _files = e.target.files;
@@ -123,11 +89,9 @@ const handleOnFileChange = (e) => {
   )
     return emits("setError", `The image size must be less than ${sizeFile} KB`);
 
-  if (!["image/png", "image/jpeg", "image/jpg"].includes(_files[0].type))
-    return emits("setError", "The file must be an image");
-
   const file = {
     id: v4(),
+
     path: URL.createObjectURL(_files[0]),
     file: _files[0],
   };
@@ -144,7 +108,7 @@ const handleRemove = (item) => {
 </script>
 
 <style lang="scss" scoped>
-.photoloader {
+.fileloader {
   &__block {
     background-color: rgb(var(--color-white));
     border-radius: 10px;
@@ -222,16 +186,25 @@ const handleRemove = (item) => {
     }
   }
 
-  &__img {
-    border-radius: 0.33rem;
-    user-select: none;
-    pointer-events: none;
-    object-fit: cover;
+  &__content {
+    background-color: rgb(var(--color-white));
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    row-gap: 12px;
+    align-items: center;
+    justify-content: center;
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
+  }
+
+  &__link {
+    color: rgb(var(--color-blue-light));
+    font-size: 12px;
+    font-weight: 700;
   }
 }
 </style>

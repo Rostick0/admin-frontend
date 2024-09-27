@@ -45,8 +45,15 @@
     v-bind="field.bind"
     :error-message="errorMessage"
   />
+  
   <UiFileLoader
     v-else-if="field.type == 'file-loader'"
+    v-model="model"
+    v-bind="field.bind"
+    :error-message="errorMessage"
+  />
+  <VFormMFileLoader
+    v-else-if="field.type == 'multiple-file-loader'"
     v-model="model"
     v-bind="field.bind"
     :error-message="errorMessage"
