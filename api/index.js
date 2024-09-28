@@ -9,6 +9,7 @@ import productUsers from "./modules/productUsers";
 import properties from "./modules/properties";
 import propertyItems from "./modules/propertyItems";
 import rubrics from "./modules/rubrics";
+import statisticDays from "./modules/statisticDays";
 import vendors from "./modules/vendors";
 
 const api = {
@@ -23,6 +24,7 @@ const api = {
   properties,
   propertyItems,
   rubrics,
+  statisticDays,
   vendors,
 };
 
