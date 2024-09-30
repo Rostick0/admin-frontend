@@ -128,15 +128,6 @@ export const currencyFormatter = new Intl.NumberFormat("ru-RU", {
   minimumFractionDigits: 0,
 });
 
-export function sliceChunks(arr, chunkSize) {
-  const res = [];
-  for (let i = 0; i < arr.length; i += chunkSize) {
-    const chunk = arr.slice(i, i + chunkSize);
-    res.push(chunk);
-  }
-  return res;
-}
-
 export const sumMaska = [
   "F",
   "F#",
