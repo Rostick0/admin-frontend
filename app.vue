@@ -40,8 +40,8 @@ configure({
   }),
 });
 
-// onMounted(() => {
-//   initSocket({ window, config, accessToken });
-//   socketListenAll({ window, user });
-// });
+onMounted(() => {
+  initSocket({ window, config, accessToken });
+  socketListenAll({ window, user });
+});
 </script>
