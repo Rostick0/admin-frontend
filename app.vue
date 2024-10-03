@@ -5,12 +5,14 @@
 </template>
 
 <script setup>
-import { configure, defineRule } from "vee-validate";
-import { email, min, max, required } from "@vee-validate/rules";
-import { localize } from "@vee-validate/i18n";
+const { configure, defineRule } = await import("vee-validate");
+const { email, min, max, required, size, image, min_value, max_value } =
+  await import("@vee-validate/rules");
+const { localize } = await import("@vee-validate/i18n");
+await import("vue-toastification/dist/index.css");
 
 const { accessToken, user, getUser } = await useAuth();
-if (true || accessToken.value && !user.value) {
+if (true || (accessToken.value && !user.value)) {
   await getUser();
 }
 const config = useRuntimeConfig();
@@ -38,8 +40,8 @@ configure({
   }),
 });
 
-onMounted(() => {
-  initSocket({ window, config, accessToken });
-  socketListenAll({ window, user });
-});
+// onMounted(() => {
+//   initSocket({ window, config, accessToken });
+//   socketListenAll({ window, user });
+// });
 </script>

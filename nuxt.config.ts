@@ -1,7 +1,7 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   css: ["~/assets/styles/index.scss"],
-  build: { transpile: ["vue-toastification"] },
+  build: { transpile: ["vue-toastification", "@vuepic/vue-datepicker"] },
   devServer: {
     port: 3031,
   },

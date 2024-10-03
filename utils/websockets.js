@@ -33,7 +33,7 @@ export const socketListenAll = ({ window, user }) => {
   window.Echo.private(`message.${user.value?.id}`).listen(
     "Message",
     (event) => {
-      console.log(event);
+      // console.log(event);
       // const { addMessage } = useTempMessage();
 
       // addMessage(event?.data);
