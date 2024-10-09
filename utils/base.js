@@ -344,6 +344,19 @@ export const statusViewsOptions = statusViews.map((name) => ({
   name,
 }));
 
+export const statusOrderings = [
+  "draft",
+  "pending",
+  "canceled",
+  "working",
+  "completed",
+  "rejected",
+];
+export const statusOrderingsOptions = statusOrderings.map((name) => ({
+  id: name,
+  name,
+}));
+
 const Utils = {
   log,
   declination,

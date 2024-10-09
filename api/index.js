@@ -2,6 +2,7 @@ import auth from "./modules/auth";
 import categories from "./modules/categories";
 import file from "./modules/file";
 import image from "./modules/image";
+import orderingProducts from "./modules/orderingProducts";
 import orderings from "./modules/orderings";
 import posts from "./modules/posts";
 import products from "./modules/products";
@@ -12,11 +13,12 @@ import rubrics from "./modules/rubrics";
 import statisticDays from "./modules/statisticDays";
 import vendors from "./modules/vendors";
 
-const api = {
+export default {
   auth,
   categories,
   file,
   image,
+  orderingProducts,
   orderings,
   posts,
   products,
@@ -27,5 +29,3 @@ const api = {
   statisticDays,
   vendors,
 };
-
-export default api;

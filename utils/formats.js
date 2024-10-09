@@ -1,5 +1,3 @@
-// import moment from "moment";
-
 export const maskaOnlyNumber = {
   mask: "S*",
   tokens: "S:[0-9]:multiple",
@@ -10,49 +8,9 @@ export const maskaOnlyLetter = {
   tokens: { S: { pattern: /^[a-zA-Z-а-яА-Я\s]*$/ } },
 };
 
-export const maskaTime = {
-  mask: "Hh:Mm",
-  tokens: {
-    H: { pattern: /^[0-2]/ },
-    h: { pattern: /^[0-9]/ },
-    M: { pattern: /^[0-5]/ },
-    m: { pattern: /^[0-9]/ },
-  },
-};
-
-export const maskaPhone = "+7 ### ### ## ##";
-
 export const dateModelType = "YYYY-MM-DD";
 
 export const dateTimeModelType = "yyyy-MM-dd HH:mm:ss";
-
-// export const dateCreatedFormat = (params) =>
-//   params || params?.value
-//     ? moment(params?.value ? params?.value : params).format("DD.MM.YYYY HH:mm")
-//     : "";
-
-// export const dateCreatedFormatdmy = (params) => {
-//   if (params == "Invalid date") return "";
-//   return params || params?.value
-//     ? moment(params?.value ? params?.value : params).format("DD.MM.YYYY")
-//     : "";
-// };
-
-// export const onlyDateFormat = (params) =>
-//   params || params?.value
-//     ? moment(params?.value ? params?.value : params).format("DD.MM")
-//     : "";
-
-// export const onlyTimeFormat = (params) =>
-//   params || params?.value
-//     ? moment(params?.value ? params?.value : params).format("HH:mm")
-//     : "";
-
-// export const dateFormatDDMM = (params) => {
-//   return params || params?.value
-//     ? moment(params?.value ? params?.value : params).format("DD.MM")
-//     : "";
-// };
 
 export function phoneFormat(str) {
   try {
@@ -113,59 +71,9 @@ export const numberClear = (str) => {
 
 export function clearPhone(str, start) {
   try {
-      const numbers = str
-          .replace(/\D+/g, "")
-          .replace(/(\d{1})/, start || "8");
-      return numbers;
+    const numbers = str.replace(/\D+/g, "").replace(/(\d{1})/, start || "8");
+    return numbers;
   } catch (error) {
-      console.error(error);
+    console.error(error);
   }
 }
-
-export const currencyFormatter = new Intl.NumberFormat("ru-RU", {
-  style: "currency",
-  currency: "RUB",
-  minimumFractionDigits: 0,
-});
-
-export const sumMaska = [
-  "F",
-  "F#",
-  "F##",
-  "F##",
-  "F ###",
-  "F# ###",
-  "F## ###",
-  "F ### ###",
-  "F# ### ###",
-  "F## ### ###",
-  "F ### ### ###",
-  "F# ### ### ###",
-  "F## ### ### ###",
-  "F## ### ### ### ###",
-  "F## ### ### ### ### ###",
-  "F ### ### ### ### ###",
-  "F# ### ### ### ### ###",
-  "F ### ### ### ### ### ###",
-  "F# ### ### ### ### ### ###",
-  "F## ### ### ### ### ### ###",
-];
-
-export const maskaSumm = {
-  mask: [...sumMaska],
-  tokens: { F: { pattern: /^[1-9]/ } },
-};
-
-export const max100Mask = ["#", "F#", "F##"];
-
-export const max100 = {
-  mask: max100Mask,
-  tokens: { F: { pattern: /^[1-9]/ } },
-};
-
-export const max99Mask = ["#", "F#"];
-
-export const max99 = {
-  mask: max99Mask,
-  tokens: { F: { pattern: /^[1-9]/ } },
-};

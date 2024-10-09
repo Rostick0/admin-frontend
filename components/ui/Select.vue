@@ -68,7 +68,10 @@ const props = defineProps({
   label: String,
   searchString: String,
   isSearchable: Boolean,
-  closeAfterSelect: Boolean,
+  closeAfterSelect: {
+    type: Boolean,
+    default: true,
+  },
   hideMessage: Boolean,
   modelValue: {
     type: [Object, Number, String, Array],

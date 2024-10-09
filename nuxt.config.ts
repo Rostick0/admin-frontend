@@ -1,10 +1,24 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
+  compatibilityDate: "2024-10-10",
   css: ["~/assets/styles/index.scss"],
   build: { transpile: ["vue-toastification", "@vuepic/vue-datepicker"] },
+
   devServer: {
     port: 3031,
   },
+
+  modules: ["@nuxtjs/i18n"],
+
+  i18n: {
+    vueI18n: "./i18n.config.ts",
+    // locales: [
+    //   { code: "en", iso: "en-US" },
+    //   { code: "ru", iso: "ru-RU" },
+    // ],
+    defaultLocale: "ru",
+  },
+
   runtimeConfig: {
     public: {
       HOST: process.env.HOST,
@@ -20,5 +34,6 @@ export default defineNuxtConfig({
       PUSHER_APP_CLUSTER: process.env.PUSHER_APP_CLUSTER,
     },
   },
+
   devtools: { enabled: true },
 });

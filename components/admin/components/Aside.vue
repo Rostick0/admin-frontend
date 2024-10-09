@@ -24,9 +24,7 @@
 <script setup>
 const menu = computed(() => [
   {
-    link: {
-      name: "admin",
-    },
+    link: "admin",
     name: "Дашборд",
     icon: defineAsyncComponent(() => import("@/components/icon/Dashboard.vue")),
   },
@@ -35,7 +33,7 @@ const menu = computed(() => [
       name: "admin-products",
     },
     name: "Товары",
-    icon: defineAsyncComponent(() => import("@/components/icon/Cart.vue")),
+    icon: defineAsyncComponent(() => import("@/components/icon/Product.vue")),
   },
   {
     link: {
@@ -64,6 +62,11 @@ const menu = computed(() => [
     },
     name: "Производители",
     icon: defineAsyncComponent(() => import("@/components/icon/Vendor.vue")),
+  },
+  {
+    link: "/admin/orderings",
+    name: "Заказы",
+    icon: defineAsyncComponent(() => import("@/components/icon/Cart.vue")),
   },
 ]);
 </script>
