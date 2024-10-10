@@ -5,14 +5,14 @@
         {{ pageTitle }}
       </div>
     </template>
-    <UiStack flex-direction="column" gap="3">
+    <UiStack flex-direction="column" gap="4">
       <PagesOrderingsMutation
         :pageTitle="`Заказ #${dataOrdering?.id}`"
         :data="dataOrdering"
         :dataMutation="dataMutation"
       />
 
-      {{ data?.user }}
+      <AdminComponentsListInfo :data="orderingInfo" title="Информация о заказе" />
 
       <Table
         title="Товары"
@@ -64,7 +64,6 @@ const { data, meta, get } = await useApi({
   filters,
   init: true,
 });
-
 await get();
 
 const computedData = computed(() =>
@@ -76,6 +75,25 @@ const computedData = computed(() =>
     },
   }))
 );
+
+const orderingInfo = computed(() => [
+  {
+    name: "Имя заказчика",
+    value: dataOrdering.value?.user?.name,
+  },
+  {
+    name: "Почта",
+    value: dataOrdering.value?.user?.email,
+  },
+  {
+    name: "Адрес",
+    value: dataOrdering.value?.address,
+  },
+  {
+    name: "Сумма",
+    value: `${formatFloatNumber(+dataOrdering.value?.price)} ₽`,
+  },
+]);
 
 const cols = [
   {
