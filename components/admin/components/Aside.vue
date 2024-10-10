@@ -37,6 +37,27 @@ const menu = computed(() => [
   },
   {
     link: {
+      name: "admin-properties",
+    },
+    name: "Свойства",
+    icon: defineAsyncComponent(() => import("@/components/icon/Product.vue")),
+  },
+  {
+    link: {
+      name: "admin-property-types",
+    },
+    name: "Типы свойств",
+    icon: defineAsyncComponent(() => import("@/components/icon/Product.vue")),
+  },
+  {
+    link: {
+      name: "admin-properties",
+    },
+    name: "Свойств для товаров",
+    icon: defineAsyncComponent(() => import("@/components/icon/Product.vue")),
+  },
+  {
+    link: {
       name: "admin-categories",
     },
     name: "Категории",
