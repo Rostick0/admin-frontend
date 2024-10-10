@@ -51,7 +51,7 @@ const menu = computed(() => [
   },
   {
     link: {
-      name: "admin-properties",
+      name: "admin-property-items",
     },
     name: "Свойств для товаров",
     icon: defineAsyncComponent(() => import("@/components/icon/Product.vue")),

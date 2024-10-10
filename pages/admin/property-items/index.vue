@@ -3,7 +3,7 @@
     <AdminFilter>
       <VFormComponent v-model="filters['filterLIKE[name]']" :field="name" />
     </AdminFilter>
-    <NuxtLink class="d-inline-flex mb-1" to="/admin/property-types/create">
+    <NuxtLink class="d-inline-flex mb-1" to="/admin/property-items/create">
       <UiButton>Создать</UiButton>
     </NuxtLink>
     <Table
@@ -46,7 +46,7 @@ const name = ref({
 });
 
 const { data, meta, get } = await useApi({
-  name: "propertyTypes.getAll",
+  name: "propertyItems.getAll",
   params: {
     // extends: "category,vendor",
   },
@@ -57,7 +57,7 @@ await get();
 const computedData = computed(() => data.value);
 
 const { deleteId, deleteConfirm, deleteCancel } = useDeleteConfirm({
-  apiName: "propertyTypes",
+  apiName: "propertyItems",
   get,
   close,
 });
@@ -74,12 +74,17 @@ const cols = [
     resizable: true,
   },
   {
+    title: "Тип единицы",
+    name: "unit",
+    resizable: true,
+  },
+  {
     name: "actions",
     renderComponent: () =>
       h(TableActions, {
         onUpdate(id) {
           navigateTo({
-            name: "admin-property-types-id",
+            name: "admin-property-items-id",
             params: {
               id,
             },

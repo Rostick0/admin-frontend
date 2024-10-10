@@ -1,5 +1,5 @@
 <template>
-  <PagesPropertyTypeMutation
+  <PagesPropertyItemMutation
     :pageTitle="`Тип свойства #${data?.id}`"
     :data="data"
     :dataMutation="dataMutation"
@@ -12,8 +12,9 @@ import api from "~/api";
 const id = useRoute().params.id;
 
 const { data, get } = await useApi({
-  name: "propertyTypes.get",
+  name: "propertyItems.get",
   params: {
+    extends: "property,property_type",
   },
   requestParams: {
     id,
@@ -22,7 +23,7 @@ const { data, get } = await useApi({
 await get();
 
 const dataMutation = async (data) =>
-  await api.propertyTypes.update({
+  await api.propertyItems.update({
     id,
     data,
   });
