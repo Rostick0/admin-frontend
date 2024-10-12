@@ -44,9 +44,9 @@ const menu = computed(() => [
   },
   {
     link: {
-      name: "admin-property-types",
+      name: "admin-property-categories",
     },
-    name: "Типы свойств",
+    name: "Свойства - категория",
     icon: defineAsyncComponent(() => import("@/components/icon/Product.vue")),
   },
   {

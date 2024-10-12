@@ -15,7 +15,7 @@
               <VFormComponent :field="type" />
               <VFormComponent :field="unit" />
               <VFormComponent :field="property" />
-              <VFormComponent :field="property_type" />
+              <!-- <VFormComponent :field="property_type" /> -->
 
               <UiStack>
                 <UiButton>Сохранить</UiButton>
@@ -163,7 +163,7 @@ async function getPropertiesOptions(params) {
 
 async function getPropertieTypesOptions(params) {
   try {
-    const { data } = await api.propertyTypes.getAll({
+    const { data } = await api.propertyCategories.getAll({
       params: params,
     });
 

@@ -14,7 +14,7 @@ const id = useRoute().params.id;
 const { data, get } = await useApi({
   name: "propertyItems.get",
   params: {
-    extends: "property,property_type",
+    extends: "property",
   },
   requestParams: {
     id,
