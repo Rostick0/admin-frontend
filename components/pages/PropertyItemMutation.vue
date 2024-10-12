@@ -15,7 +15,7 @@
               <VFormComponent :field="type" />
               <VFormComponent :field="unit" />
               <VFormComponent :field="property" />
-              <!-- <VFormComponent :field="property_type" /> -->
+              <VFormComponent :field="property_type" />
 
               <UiStack>
                 <UiButton>Сохранить</UiButton>
