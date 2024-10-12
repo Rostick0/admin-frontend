@@ -3,7 +3,7 @@
     <AdminFilter>
       <VFormComponent v-model="filters['filterLIKE[name]']" :field="name" />
     </AdminFilter>
-    <NuxtLink class="d-inline-flex mb-1" to="/admin/property-types/create">
+    <NuxtLink class="d-inline-flex mb-1" to="/admin/property-items/create">
       <UiButton>Создать</UiButton>
     </NuxtLink>
     <Table
@@ -79,7 +79,7 @@ const cols = [
       h(TableActions, {
         onUpdate(id) {
           navigateTo({
-            name: "admin-property-items-id",
+            name: "admin-property-types-id",
             params: {
               id,
             },

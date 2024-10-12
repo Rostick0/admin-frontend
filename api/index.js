@@ -9,6 +9,7 @@ import products from "./modules/products";
 import productUsers from "./modules/productUsers";
 import properties from "./modules/properties";
 import propertyItems from "./modules/propertyItems";
+import propertyTypes from "./modules/propertyTypes";
 import propertyCategories from "./modules/propertyCategories";
 import rubrics from "./modules/rubrics";
 import statisticDays from "./modules/statisticDays";
@@ -26,6 +27,7 @@ export default {
   productUsers,
   properties,
   propertyItems,
+  propertyTypes,
   propertyCategories,
   rubrics,
   statisticDays,
