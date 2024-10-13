@@ -48,7 +48,7 @@ const name = ref({
 const { data, meta, get } = await useApi({
   name: "propertyCategories.getAll",
   params: {
-    extends: "property_item,category",
+    extends: "property,category",
   },
   filters,
 });
@@ -70,7 +70,7 @@ const cols = [
   },
   {
     title: "Свойство",
-    name: "property_item.name",
+    name: "property.name",
     resizable: true,
   },
   {

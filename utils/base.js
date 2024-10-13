@@ -357,8 +357,8 @@ export const statusOrderingsOptions = statusOrderings.map((name) => ({
   name,
 }));
 
-export const propertyItemTypes = ["checkbox", "select", "input"];
-export const propertyItemTypesOptions = propertyItemTypes.map((name) => ({
+export const propertyTypes = ["checkbox", "select", "input"];
+export const propertyTypesOptions = propertyTypes.map((name) => ({
   id: name,
   name,
 }));

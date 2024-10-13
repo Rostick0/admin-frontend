@@ -56,13 +56,13 @@ const menu = computed(() => [
     name: "Свойства - категория",
     icon: defineAsyncComponent(() => import("@/components/icon/Product.vue")),
   },
-  {
-    link: {
-      name: "admin-property-items",
-    },
-    name: "Свойств для товаров",
-    icon: defineAsyncComponent(() => import("@/components/icon/Product.vue")),
-  },
+  // {
+  //   link: {
+  //     name: "admin-property-items",
+  //   },
+  //   name: "Свойств для товаров",
+  //   icon: defineAsyncComponent(() => import("@/components/icon/Product.vue")),
+  // },
   {
     link: {
       name: "admin-categories",

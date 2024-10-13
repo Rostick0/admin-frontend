@@ -3,7 +3,7 @@
     <AdminFilter>
       <VFormComponent v-model="filters['filterLIKE[name]']" :field="name" />
     </AdminFilter>
-    <NuxtLink class="d-inline-flex mb-1" to="/admin/property-items/create">
+    <NuxtLink class="d-inline-flex mb-1" to="/admin/property-types/create">
       <UiButton>Создать</UiButton>
     </NuxtLink>
     <Table

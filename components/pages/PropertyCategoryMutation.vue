@@ -10,7 +10,7 @@
         <UiStack flex-direction="column" gap="2">
           <form @submit="onSubmit">
             <UiStack flex-direction="column" gap="3">
-              <VFormComponent :field="property_item" />
+              <VFormComponent :field="property" />
               <VFormComponent :field="category" />
               <UiStack>
                 <UiButton>Сохранить</UiButton>
@@ -35,19 +35,17 @@ const { data, dataMutation, ...props } = defineProps({
 
 const { handleSubmit, setErrors } = useForm();
 
-// "property_item_id", "category_id";
-
-const property_item = ref({
+const property = ref({
   type: "select",
-  name: "property_item",
+  name: "property",
   rules: "required",
-  modelValue: data?.property_item,
+  modelValue: data?.property,
 
   bind: {
     label: "Свойство для товаров*",
     placeholder: "Введите свойство",
     searchFn: async (_ctx, search, limit, page) =>
-      await getPropertyCategoriesOptions({
+      await getPropertiesOptions({
         limit,
         page,
         "filterLIKE[name]": search,
@@ -73,9 +71,9 @@ const category = ref({
   },
 });
 
-const onSubmit = handleSubmit(async ({ property_item, category }) => {
+const onSubmit = handleSubmit(async ({ property, category }) => {
   const res = await dataMutation({
-    property_item_id: property_item?.id,
+    property_id: property?.id,
     category_id: category?.id,
   });
 
@@ -94,9 +92,9 @@ const onSubmit = handleSubmit(async ({ property_item, category }) => {
   });
 }, invalidValuesForm);
 
-async function getPropertyCategoriesOptions(params) {
+async function getPropertiesOptions(params) {
   try {
-    const { data } = await api.propertyItems.getAll({
+    const { data } = await api.properties.getAll({
       params: params,
     });
 

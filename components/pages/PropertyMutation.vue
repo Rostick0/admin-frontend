@@ -11,6 +11,11 @@
           <form @submit="onSubmit">
             <UiStack flex-direction="column" gap="3">
               <VFormComponent :field="name" />
+              <VFormComponent :field="is_top" />
+              <VFormComponent :field="type" />
+              <VFormComponent :field="unit" />
+              <VFormComponent :field="property_type" />
+
               <UiStack>
                 <UiButton>Сохранить</UiButton>
               </UiStack>
@@ -37,7 +42,7 @@ const { handleSubmit, setErrors } = useForm();
 const name = ref({
   type: "text",
   name: "name",
-  rules: "required",
+  rules: "required|max:255",
   modelValue: data?.name,
 
   bind: {
@@ -46,8 +51,65 @@ const name = ref({
   },
 });
 
-const onSubmit = handleSubmit(async ({ ...values }) => {
-  const res = await dataMutation(values);
+const is_top = ref({
+  type: "switch",
+  name: "is_top",
+  modelValue: data?.is_top,
+
+  bind: {
+    title: "Показывать сверху",
+  },
+});
+
+const type = ref({
+  type: "select",
+  name: "type",
+  rules: "required|max:255",
+  modelValue: data?.type,
+
+  bind: {
+    label: "Тип*",
+    placeholder: "Введите тип",
+    options: propertyTypesOptions,
+  },
+});
+
+const unit = ref({
+  type: "text",
+  name: "unit",
+  rules: "required|max:255",
+  modelValue: data?.unit,
+
+  bind: {
+    label: "Единица измерения*",
+    placeholder: "Введите единицу",
+  },
+});
+
+const property_type = ref({
+  type: "select",
+  name: "property_type",
+  rules: "required",
+  modelValue: data?.property,
+
+  bind: {
+    label: "Свойство*",
+    placeholder: "Введите название",
+    searchFn: async (_ctx, search, limit, page) =>
+      await getPropertyTypesOptions({
+        limit,
+        page,
+        "filterLIKE[name]": search,
+      }),
+  },
+});
+
+const onSubmit = handleSubmit(async ({ property_type, type, ...values }) => {
+  const res = await dataMutation({
+    ...values,
+    property_type_id: property_type?.id,
+    type: type?.id,
+  });
 
   if (res?.error) {
     warningPopup(res?.errorResponse?.data?.message);
@@ -63,6 +125,16 @@ const onSubmit = handleSubmit(async ({ ...values }) => {
     });
   });
 }, invalidValuesForm);
-</script>
 
-<style></style>
+async function getPropertyTypesOptions(params) {
+  try {
+    const { data } = await api.propertyTypes.getAll({
+      params: params,
+    });
+
+    return data?.map((item) => ({ id: item.id, value: item.name, item }));
+  } catch (e) {
+    console.log(error);
+  }
+}
+</script>
