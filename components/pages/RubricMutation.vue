@@ -1,5 +1,5 @@
 <template>
-  <AdminLayout>
+  <Layout>
     <template #title>
       <div>
         {{ pageTitle }}
@@ -19,7 +19,7 @@
         </UiStack>
       </UiCard>
     </UiStack>
-  </AdminLayout>
+  </Layout>
 </template>
 
 <script setup>

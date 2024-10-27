@@ -1,8 +1,8 @@
 <template>
-  <AdminLayout>
-    <AdminFilter>
+  <Layout>
+    <Filter>
       <VFormComponent v-model="filters['filterLIKE[name]']" :field="name" />
-    </AdminFilter>
+    </Filter>
     <NuxtLink class="d-inline-flex mb-1" to="/admin/property-types/create">
       <UiButton>Создать</UiButton>
     </NuxtLink>
@@ -13,11 +13,11 @@
       :filters="filters"
       title="Тип свойств"
     />
-    <AdminComponentsModalDelete
+    <UiModalDelete
       @confirm="deleteConfirm"
       @cancel="deleteCancel"
     />
-  </AdminLayout>
+  </Layout>
 </template>
 
 <script setup>

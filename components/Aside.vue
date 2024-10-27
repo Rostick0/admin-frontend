@@ -14,8 +14,8 @@
         :key="item.name"
         :to="item.link"
       >
-        <component :is="item.icon"></component>
-        <span>{{ item.name }}</span>
+        <component class="aside__link_svg" :is="item.icon"></component>
+        <span class="aside__link_text">{{ item.name }}</span>
       </NuxtLink>
     </nav>
   </div>
@@ -24,7 +24,9 @@
 <script setup>
 const menu = computed(() => [
   {
-    link: "admin",
+    link: {
+      name: "admin",
+    },
     name: "Дашборд",
     icon: defineAsyncComponent(() => import("@/components/icon/Dashboard.vue")),
   },
@@ -127,8 +129,13 @@ const menu = computed(() => [
   &__link {
     display: inline-flex;
     align-items: center;
-    column-gap: 0.25rem;
+    column-gap: 0.5rem;
     padding: 0.75rem 2.5rem;
+    text-wrap: nowrap;
+
+    &_svg {
+      flex-shrink: 0;
+    }
   }
 }
 </style>

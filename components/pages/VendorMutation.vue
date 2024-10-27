@@ -1,5 +1,5 @@
 <template>
-  <AdminLayout>
+  <Layout>
     <template #title>
       <div>{{ pageTitle }}</div>
       <!-- <div>Производитель #{{ data?.id }}</div> -->
@@ -20,7 +20,7 @@
         </UiStack>
       </UiCard>
     </UiStack>
-  </AdminLayout>
+  </Layout>
 </template>
 
 <script setup>

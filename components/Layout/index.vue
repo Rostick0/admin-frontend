@@ -13,7 +13,7 @@
 </template>
 
 <script setup>
-import Aside from "../components/Aside.vue";
+import Aside from "../Aside.vue";
 import Header from "./Header.vue";
 
 // onMounted(() => {

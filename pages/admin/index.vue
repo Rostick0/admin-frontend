@@ -1,5 +1,5 @@
 <template>
-  <AdminLayout class="admin-dashboard">
+  <Layout class="admin-dashboard">
     <div class="admin-dashboard__title">Products data</div>
     <div class="admin-dashboard__charts">
       <div>
@@ -58,7 +58,7 @@
         />
       </div>
     </div>
-  </AdminLayout>
+  </Layout>
 </template>
 
 <script setup>

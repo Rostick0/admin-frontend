@@ -1,14 +1,14 @@
 <template>
-  <AdminLayout>
+  <Layout>
     <NuxtLink class="d-inline-flex mb-1" to="/admin/categories/create">
       <UiButton>Создать</UiButton>
     </NuxtLink>
     <Table :data="computedData" :cols="cols" :meta="meta" :filters="filters" />
-    <AdminComponentsModalDelete
+    <UiModalDelete
       @confirm="deleteConfirm"
       @cancel="deleteCancel"
     />
-  </AdminLayout>
+  </Layout>
 </template>
 
 <script setup>

@@ -1,5 +1,5 @@
 <template>
-  <AdminLayout>
+  <Layout>
     <NuxtLink class="d-inline-flex mb-1" to="/admin/posts/create">
       <UiButton>Создать</UiButton>
     </NuxtLink>
@@ -10,11 +10,11 @@
       :meta="meta"
       :filters="filters"
     />
-    <AdminComponentsModalDelete
+    <UiModalDelete
       @confirm="deleteConfirm"
       @cancel="deleteCancel"
     />
-  </AdminLayout>
+  </Layout>
 </template>
 
 <script setup>

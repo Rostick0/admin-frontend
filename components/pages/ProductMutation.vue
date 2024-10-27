@@ -1,5 +1,5 @@
 <template>
-  <AdminLayout>
+  <Layout>
     <template #title>
       <div>
         {{ pageTitle }}
@@ -18,6 +18,7 @@
               <VFormComponent :field="count" v-if="is_infinitely.modelValue" />
               <VFormComponent :field="vendor" />
               <VFormComponent :field="category" />
+              <!-- {{ category.modelValue?.id }} -->
               <VFormComponent :field="images" />
               <VFormComponent :field="files" />
               <VFormComponent :field="status" />
@@ -25,6 +26,7 @@
                 v-if="status.modelValue?.name === 'future'"
                 :field="date_publication"
               />
+              {{ properties }}
               <UiStack>
                 <UiButton>Сохранить</UiButton>
               </UiStack>
@@ -33,7 +35,7 @@
         </UiStack>
       </UiCard>
     </UiStack>
-  </AdminLayout>
+  </Layout>
 </template>
 
 <script setup>
@@ -206,6 +208,20 @@ const date_publication = ref({
     label: "Дата публикации",
   },
 });
+
+const { filters: filtersProperties } = useFilters({
+  initialFilters: {
+    "filterEQ[property_categories.category_id]": category.value.modelValue?.id,
+  },
+});
+const { data: properties, get: propertiesGet } = await useApi({
+  name: "properties.getAll",
+  params: {
+    extends: "property_type,property_values",
+  },
+  filters: filtersProperties,
+});
+await propertiesGet();
 
 const { getImageIdsFrom } = useImage();
 

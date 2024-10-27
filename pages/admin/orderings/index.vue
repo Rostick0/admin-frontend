@@ -1,5 +1,5 @@
 <template>
-  <AdminLayout>
+  <Layout>
     <Table
       title="Производители"
       :data="computedData"
@@ -7,11 +7,11 @@
       :meta="meta"
       :filters="filters"
     />
-    <AdminComponentsModalDelete
+    <UiModalDelete
       @confirm="deleteConfirm"
       @cancel="deleteCancel"
     />
-  </AdminLayout>
+  </Layout>
 </template>
 
 <script setup>

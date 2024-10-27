@@ -1,6 +1,6 @@
 <template>
-  <AdminLayout>
-    <AdminFilter>
+  <Layout>
+    <Filter>
       <VFormComponent v-model="filters['filterLIKE[title]']" :field="title" />
       <VFormComponent v-model="filters['filterGEQ[price]']" :field="priceGeq" />
       <VFormComponent v-model="filters['filterLEQ[price]']" :field="priceLeq" />
@@ -12,7 +12,7 @@
         v-model="filters['filterEQ[vendor_id]']"
         :field="vendor_id"
       />
-    </AdminFilter>
+    </Filter>
     <NuxtLink class="d-inline-flex mb-1" to="/admin/products/create">
       <UiButton>Создать</UiButton>
     </NuxtLink>
@@ -23,11 +23,11 @@
       :filters="filters"
       title="Товары"
     />
-    <AdminComponentsModalDelete
+    <UiModalDelete
       @confirm="deleteConfirm"
       @cancel="deleteCancel"
     />
-  </AdminLayout>
+  </Layout>
 </template>
 
 <script setup>
