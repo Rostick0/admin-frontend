@@ -1,7 +1,11 @@
 <template>
-  <UiStack class="properties" flex-direction="column" gap="2">
+  <UiStack
+    class="properties"
+    v-if="propertyValues?.length"
+    flex-direction="column"
+    gap="2"
+  >
     <h3 class="h3">Дополнительные характеристики</h3>
-    <!-- <pre>{{ property }}</pre> -->
     <div class="properties-grid">
       <VFormComponent
         v-for="property in propertyValues"

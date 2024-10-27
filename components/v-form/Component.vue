@@ -18,12 +18,12 @@
     v-bind="field.bind"
     :error-message="errorMessage"
   />
-  <UiCheckbox
+  <!-- <UiCheckbox
     v-else-if="field.type == 'checkbox'"
     v-model="model"
     v-bind="field.bind"
     :error-message="errorMessage"
-  />
+  /> -->
   <UiMultiMSelect
     v-else-if="field.type == 'multiple-select'"
     v-model="model"
@@ -33,7 +33,7 @@
   />
 
   <VFormSwitch
-    v-else-if="field.type == 'switch'"
+    v-else-if="['switch', 'checkbox'].includes(field.type)"
     v-model="model"
     v-bind="field.bind"
     :error-message="errorMessage"
@@ -45,7 +45,7 @@
     v-bind="field.bind"
     :error-message="errorMessage"
   />
-  
+
   <UiFileLoader
     v-else-if="field.type == 'file-loader'"
     v-model="model"

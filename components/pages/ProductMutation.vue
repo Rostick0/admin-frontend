@@ -1,7 +1,8 @@
 <template>
   <Layout>
-    <!-- <pre>{{ properties[0]?.name + " " + properties[0]?.unit }}</pre> -->
-    <!-- {{ values }} -->
+    <!-- <pre>
+    {{ data?.product_properties }}
+    </pre> -->
     <template #title>
       <div>
         {{ pageTitle }}
@@ -221,34 +222,40 @@ const { data: properties, get: propertiesGet } = await useApi({
   params: {
     extends: "property_type,property_values",
   },
-  filters: filtersProperties,
+  // filters: filtersProperties,
 });
-await propertiesGet();
+await propertiesGet(
+  {},
+  {
+    "filterEQ[property_categories.category_id]": category.value.modelValue?.id,
+  }
+);
 
 const { getImageIdsFrom } = useImage();
 
-const { propertyValues } = usePropertyValues({
-  initialProperty: properties.value,
-});
-// const propertyValues = ref(
-//   properties.value?.map((property, i) => ({
-//     type: property?.type,
-//     name: "property." + i,
-//     // rules: "required|max:255",
-//     modelValue: "",
+const { propertyValues, convertPropertyValues, rebuildProperties } =
+  usePropertyValues({
+    initialProperty: properties.value,
+    productProperty: data?.product_properties,
+  });
 
-//     bind: {
-//       label: "Название*",
-//       placeholder: "Введите название",
-//     },
-//   }))
-// );
+watch(
+  () => category.value.modelValue,
+  async (cur) => {
+    // await
+    await propertiesGet(
+      {},
+      {
+        "filterEQ[property_categories.category_id]": cur?.id,
+      }
+    );
+
+    rebuildProperties(properties.value, data?.product_properties);
+  }
+);
 
 const onSubmit = handleSubmit(
   async ({ rubric, images, files, status, ...values }) => {
-    console.log(values);
-    console.log(propertyValues);
-    return;
     const images_load = await getImageIdsFrom(images);
 
     const res = await dataMutation({
@@ -256,6 +263,7 @@ const onSubmit = handleSubmit(
       images: images_load,
       vendor: vendor?.id,
       category: rubric?.id,
+      product_properties: convertPropertyValues(),
     });
 
     if (res?.error) {
@@ -283,7 +291,7 @@ async function getVendorsOptions(params) {
 
     return data?.map((item) => ({ id: item.id, value: item?.name, item }));
   } catch (e) {
-    console.log(error);
+    console.error(error);
   }
 }
 
@@ -295,7 +303,7 @@ async function getCategoriesOptions(params) {
 
     return data?.map((item) => ({ id: item.id, value: item?.name, item }));
   } catch (e) {
-    console.log(error);
+    console.error(error);
   }
 }
 </script>

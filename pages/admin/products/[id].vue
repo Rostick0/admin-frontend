@@ -14,7 +14,7 @@ const id = useRoute().params.id;
 const { data, get } = await useApi({
   name: "products.get",
   params: {
-    extends: "vendor,category,files.file,images.image",
+    extends: "vendor,category,files.file,images.image,product_properties.property",
   },
   requestParams: {
     id,

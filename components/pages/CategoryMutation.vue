@@ -109,7 +109,7 @@ async function getCategoriesOptions(params) {
 
     return data?.map((item) => ({ id: item.id, value: item.name, item }));
   } catch (e) {
-    console.log(error);
+    console.error(error);
   }
 }
 </script>
