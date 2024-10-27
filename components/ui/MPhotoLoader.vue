@@ -16,13 +16,17 @@
           v-bind="$attrs"
           class="photoloader__input"
           type="file"
-          accept="image/png,image/jpeg,image/jpg,image/gif"
+          accept="image/webp,image/png,image/jpeg,image/jpg,image/gif"
         />
         <!-- <img class='photoloader__image' src="/img/icons/upload.svg" alt="" /> -->
         <div class="photoloader__title">Нажмите для загрузки фото</div>
         <div class="photoloader__subtitle">PNG, JPG, GIF максимум 3MB</div>
       </label>
-      <div class="photoloader__images" @mouseup="dragElem = null">
+      <div
+        class="photoloader__images"
+        v-if="modelValue?.length"
+        @mouseup="dragElem = null"
+      >
         <template v-for="item in modelValue" :key="item.id">
           <div @mousedown="dragElem = item">
             <UiDraggable>

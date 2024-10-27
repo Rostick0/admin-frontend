@@ -12,7 +12,7 @@
         :dataMutation="dataMutation"
       />
 
-      <AdminComponentsListInfo :data="orderingInfo" title="Информация о заказе" />
+      <UiListInfo :data="orderingInfo" title="Информация о заказе" />
 
       <Table
         title="Товары"

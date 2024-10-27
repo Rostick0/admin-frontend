@@ -94,9 +94,7 @@ export const checkSaved = (resp, callback, message = null, errorCallback) => {
   }
 };
 
-function cloneDeep(obj) {
-  return JSON.parse(JSON.stringify(obj));
-}
+const cloneDeep = (obj) => JSON.parse(JSON.stringify(obj));
 
 function objNotEmpty(obj) {
   if (typeof obj !== "object" || obj == null) return;
@@ -115,13 +113,9 @@ function uniqueId() {
   return idstr;
 }
 
-const isObject = (obj) => {
-  return obj && typeof obj == "object" && !Array?.isArray(obj);
-};
+const isObject = (obj) => obj && typeof obj == "object" && !Array?.isArray(obj);
 
-const isArray = (obj) => {
-  return obj && typeof obj == "object" && Array?.isArray(obj);
-};
+const isArray = (obj) => obj && typeof obj == "object" && Array?.isArray(obj);
 
 export const mergeObjectsData = (initialData, data, formatArray) => {
   try {

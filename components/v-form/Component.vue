@@ -1,6 +1,6 @@
 <template>
   <UiField
-    v-if="field.type == 'text'"
+    v-if="['input', 'text'].includes(field.type)"
     v-model="model"
     v-bind="field.bind"
     :errorMessage="errorMessage"

@@ -2,7 +2,7 @@
   <Layout class="admin-dashboard">
     <div class="admin-dashboard__title">Products data</div>
     <div class="admin-dashboard__charts">
-      <div>
+      <div class="admin-dashboard__chart">
         <UiChartStats
           :datasets="[
             {
@@ -15,7 +15,7 @@
           :labels="labels"
         />
       </div>
-      <div>
+      <div class="admin-dashboard__chart">
         <UiChartStats
           :datasets="[
             {
@@ -28,7 +28,7 @@
           :labels="labels"
         />
       </div>
-      <div>
+      <div class="admin-dashboard__chart">
         <UiChartStats
           :datasets="[
             {
@@ -44,7 +44,7 @@
     </div>
     <div class="admin-dashboard__title">Posts data</div>
     <div class="admin-dashboard__charts">
-      <div>
+      <div class="admin-dashboard__chart">
         <UiChartStats
           :datasets="[
             {
@@ -147,6 +147,12 @@ const chartData = computed(() => {
     &:last-child {
       margin-bottom: 0;
     }
+  }
+
+  &__chart {
+    background-color: rgb(var(--color-white));
+    border-radius: 0.33rem;
+    padding: 0.5rem;
   }
 }
 </style>

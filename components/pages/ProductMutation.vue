@@ -1,5 +1,7 @@
 <template>
   <Layout>
+    <!-- <pre>{{ properties[0]?.name + " " + properties[0]?.unit }}</pre> -->
+    <!-- {{ values }} -->
     <template #title>
       <div>
         {{ pageTitle }}
@@ -26,7 +28,7 @@
                 v-if="status.modelValue?.name === 'future'"
                 :field="date_publication"
               />
-              {{ properties }}
+              <ProductPropertiesMutation :propertyValues="propertyValues" />
               <UiStack>
                 <UiButton>Сохранить</UiButton>
               </UiStack>
@@ -48,7 +50,7 @@ const { data, dataMutation, ...props } = defineProps({
   pageTitle: String,
 });
 
-const { handleSubmit, setErrors } = useForm();
+const { handleSubmit, setErrors, values } = useForm();
 
 const title = ref({
   type: "text",
@@ -225,8 +227,28 @@ await propertiesGet();
 
 const { getImageIdsFrom } = useImage();
 
+const { propertyValues } = usePropertyValues({
+  initialProperty: properties.value,
+});
+// const propertyValues = ref(
+//   properties.value?.map((property, i) => ({
+//     type: property?.type,
+//     name: "property." + i,
+//     // rules: "required|max:255",
+//     modelValue: "",
+
+//     bind: {
+//       label: "Название*",
+//       placeholder: "Введите название",
+//     },
+//   }))
+// );
+
 const onSubmit = handleSubmit(
   async ({ rubric, images, files, status, ...values }) => {
+    console.log(values);
+    console.log(propertyValues);
+    return;
     const images_load = await getImageIdsFrom(images);
 
     const res = await dataMutation({
