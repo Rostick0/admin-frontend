@@ -14,6 +14,7 @@
           <form @submit="onSubmit">
             <UiStack flex-direction="column" gap="3">
               <VFormComponent :field="title" />
+              <VFormComponent :field="link_name" />
               <VFormComponent :field="description" />
               <VFormComponent :field="price" />
               <VFormComponent :field="old_price" />
@@ -62,6 +63,18 @@ const title = ref({
   bind: {
     label: "Название*",
     placeholder: "Введите название",
+  },
+});
+
+const link_name = ref({
+  type: "text",
+  name: "link_name",
+  rules: "required|max:255",
+  modelValue: data?.link_name,
+
+  bind: {
+    label: "Ссылка*",
+    placeholder: "Название ссылки",
   },
 });
 
