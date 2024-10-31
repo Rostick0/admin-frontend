@@ -12,6 +12,7 @@ import {
   LineElement,
   Title,
   Tooltip,
+  Filler,
   Legend,
 } from "chart.js";
 
@@ -22,6 +23,7 @@ ChartJS.register(
   LineElement,
   Title,
   Tooltip,
+  Filler,
   Legend
 );
 
@@ -44,6 +46,15 @@ const colorDefault = "#1d1b20";
 const colorOpacityDefault = "#1d1b2033";
 
 const options = {
+  lineTension: 0.35,
+  elements: {
+    point: {
+      backgroundColor: 'transparent',
+      radius: 2.75,
+      // radius: 0,
+      // hoverRadius: 2,
+    },
+  },
   responsive: true,
   plugins: {
     legend: {
@@ -58,6 +69,7 @@ const options = {
         color: colorDefault,
       },
       grid: {
+        display: false,
         color: colorOpacityDefault,
       },
     },
@@ -69,6 +81,7 @@ const options = {
         stepSize: 1,
       },
       grid: {
+        display: false,
         color: colorOpacityDefault,
       },
     },

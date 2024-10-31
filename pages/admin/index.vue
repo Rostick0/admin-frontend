@@ -6,8 +6,8 @@
         <UiChartStats
           :datasets="[
             {
-              backgroundColor: '#10c44d',
-              borderColor: '#10c44d',
+              backgroundColor: 'rgb(222, 241, 222)',
+              borderColor: 'rgb(20, 196, 77)',
               label: 'Sale',
               data: chartData.product.saleProductData,
             },
@@ -19,8 +19,8 @@
         <UiChartStats
           :datasets="[
             {
-              backgroundColor: '#10c44d',
-              borderColor: '#10c44d',
+              backgroundColor: 'rgb(252, 212, 213)',
+              borderColor: 'rgb(218, 0, 56)',
               label: 'Refund',
               data: chartData.product.refundProductData,
             },
@@ -32,9 +32,10 @@
         <UiChartStats
           :datasets="[
             {
-              backgroundColor: '#10c44d',
-              borderColor: '#10c44d',
+              backgroundColor: 'rgb(216, 227, 252)',
+              borderColor: 'rgb(48, 113, 231)',
               label: 'View',
+              fill: true,
               data: chartData.product.viewProductData,
             },
           ]"
@@ -48,8 +49,8 @@
         <UiChartStats
           :datasets="[
             {
-              backgroundColor: '#10c44d',
-              borderColor: '#10c44d',
+              backgroundColor: 'rgb(222, 241, 222)',
+              borderColor: 'rgb(20, 196, 77)',
               label: 'Sale',
               data: chartData.post.viewPostData,
             },
