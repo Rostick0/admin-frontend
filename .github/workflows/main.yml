@@ -16,10 +16,10 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v1
 
-      - name: Build Docker image
+      - name: Cd docker
         run: |
-          docker build -t my_frontend:latest .
+          cd docker
 
-      - name: Run Docker container
+      - name: Build Docker build and run
         run: |
-          docker run -d --name my_frontend-container my_frontend:latest
+          docker compose up --build -d
