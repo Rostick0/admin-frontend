@@ -16,10 +16,6 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v1
 
-      - name: Cd docker
-        run: |
-          cd docker
-
       - name: Build Docker build and run
         run: |
-          docker compose up --build -d
+           cd docker; docker compose up --build -d
