@@ -12,7 +12,7 @@ const ClassicEditor = await import("@ckeditor/ckeditor5-build-classic").then(
 );
 import type { EditorConfig } from "@ckeditor/ckeditor5-core";
 
-const ckedit = CKEditor.default.component;
+const ckedit = CKEditor.Ckeditor;
 
 const props = defineProps<{
   modelValue?: any;

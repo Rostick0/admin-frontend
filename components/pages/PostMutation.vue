@@ -78,13 +78,13 @@ const description = ref({
   modelValue: data?.description,
 
   bind: {
-    label: "Описание*",
+    label: "Краткое описание*",
     placeholder: "Введите описание",
   },
 });
 
 const content = ref({
-  type: "textarea",
+  type: "ckeditor",
   name: "content",
   rules: "required|max:65536",
   modelValue: data?.content,
