@@ -1,0 +1,32 @@
+version: '3'
+
+networks:
+  nuxt-network:
+    driver: bridge
+  default:
+
+
+volumes:
+  public-storage:
+  node_modules: {}
+
+services:
+  my_frontend:
+    build:
+      dockerfile: ../docker/nuxt/Dockerfile
+      context: './../frontend'
+      args:
+        - BASE_URL=https://localhost:3031
+        - API_URL=https://localhost:3031/api
+        - BACK_URL=https://localhost:3031
+    image: nginx:latest
+    environment:
+      - HOST=0.0.0.0
+      - PORT=3000
+    restart: "no"
+    ports:
+      - "24681:24678"
+      - "5002:3000"
+    networks:
+      - nuxt-network
+      - default
