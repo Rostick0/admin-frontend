@@ -1,28 +1,28 @@
 <template>
   <UiStack flex="same-all" gap="2" flexDirection="column">
     <label
-      class="control__fileloader fileloader__block"
+      class="control__photoloader photoloader__block"
       :class="{ error: errorMessage }"
     >
       <input
         @change="handleOnFileChange"
         @click="$event.target.value = null"
         v-bind="$attrs"
-        class="fileloader__input"
+        class="photoloader__input"
         type="file"
       />
-      <div class="fileloader__title">Нажмите для загрузки файлов</div>
+      <div class="photoloader__title">Нажмите для загрузки файлов</div>
     </label>
-    <div class="fileloader__images">
-      <div class="fileloader__image" v-for="item in modelValue" :key="item.id">
-        <div class="fileloader__image_delete" @click="handleRemove(item)">
+    <div class="photoloader__images">
+      <div class="photoloader__image" v-for="item in modelValue" :key="item.id">
+        <div class="photoloader__image_delete" @click="handleRemove(item)">
           ✖
         </div>
-        <div class="fileloader__content">
-          <div class="fileloader__name">
+        <div class="photoloader__content">
+          <div class="photoloader__name">
             {{ item?.file?.name }}
           </div>
-          <a class="fileloader__link" :href="item?.path" target="_blank"
+          <a class="photoloader__link" :href="item?.path" target="_blank"
             >Show</a
           >
         </div>
@@ -108,7 +108,7 @@ const handleRemove = (item) => {
 </script>
 
 <style lang="scss" scoped>
-.fileloader {
+.photoloader {
   &__block {
     background-color: rgb(var(--color-white));
     border-radius: 10px;

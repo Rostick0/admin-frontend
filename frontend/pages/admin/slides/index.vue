@@ -1,19 +1,16 @@
 <template>
   <Layout>
-    <NuxtLink class="d-inline-flex mb-1" to="/admin/vendors/create">
+    <NuxtLink class="d-inline-flex mb-1" to="/admin/slides/create">
       <UiButton>Создать</UiButton>
     </NuxtLink>
     <Table
-      title="Производители"
+      title="Слайды"
       :data="computedData"
       :cols="cols"
       :meta="meta"
       :filters="filters"
     />
-    <UiModalDelete
-      @confirm="deleteConfirm"
-      @cancel="deleteCancel"
-    />
+    <UiModalDelete @confirm="deleteConfirm" @cancel="deleteCancel" />
   </Layout>
 </template>
 
@@ -31,21 +28,21 @@ const { filters } = useFilters({
 });
 
 const { data, meta, get } = await useApi({
-  name: "vendors.getAll",
+  name: "slides.getAll",
   params: {},
   filters,
   init: true,
 });
 
-const computedData = computed(() =>
-  data.value?.map(({ created_at, ...item }) => ({
+const computedData = computed(() => {
+  return data.value?.map(({ created_at, ...item }) => ({
     ...item,
     created_at: new Date(created_at).toLocaleString(),
-  }))
-);
+  }));
+});
 
 const { deleteId, deleteConfirm, deleteCancel } = useDeleteConfirm({
-  apiName: "vendors",
+  apiName: "slides",
   get,
   close,
 });
@@ -57,8 +54,8 @@ const cols = [
     resizable: true,
   },
   {
-    title: "Имя",
-    name: "name",
+    title: "Заголовок",
+    name: "title",
     resizable: true,
   },
   {
@@ -72,7 +69,7 @@ const cols = [
       h(TableActions, {
         onUpdate(id) {
           navigateTo({
-            name: "admin-vendors-id",
+            name: "admin-slides-id",
             params: {
               id,
             },

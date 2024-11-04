@@ -33,7 +33,7 @@ const { filters } = useFilters({
 const { data, meta, get } = await useApi({
   name: "rubrics.getAll",
   params: {},
-  filters: filters,
+  filters,
   init: true,
 });
 

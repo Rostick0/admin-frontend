@@ -36,7 +36,7 @@ const { data, meta, get } = await useApi({
   params: {
     extends: "rubric",
   },
-  filters: filters,
+  filters,
   init: true,
 });
 

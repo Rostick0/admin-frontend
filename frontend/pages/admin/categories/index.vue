@@ -29,7 +29,7 @@ const { data, meta, get } = await useApi({
   params: {
     // extends: "category,vendor",
   },
-  filters: filters,
+  filters,
   init: false,
 });
 await get();

@@ -11,6 +11,7 @@ import properties from "./modules/properties";
 import propertyTypes from "./modules/propertyTypes";
 import propertyCategories from "./modules/propertyCategories";
 import rubrics from "./modules/rubrics";
+import slides from "./modules/slides";
 import statisticDays from "./modules/statisticDays";
 import vendors from "./modules/vendors";
 
@@ -28,6 +29,7 @@ export default {
   propertyTypes,
   propertyCategories,
   rubrics,
+  slides,
   statisticDays,
   vendors,
 };
