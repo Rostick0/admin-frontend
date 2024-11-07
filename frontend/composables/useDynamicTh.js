@@ -17,12 +17,12 @@ export default (_cols, { resizeCallback }) => {
     mouseDownPos.value = e.clientX;
 
     const mouseMoveEventListener = (e) => {
-      if (!col.mouseDown) {
-        return;
-      }
+      if (!col.mouseDown) return;
+      
       const width = col.mouseDownWidth + (e.clientX - mouseDownPos.value);
       if (
-        width > 80 && width <= 750
+        width > 80 &&
+        width <= 750
         // && cols.value.reduce((acc, i) => i.width + acc, -col.width) + width < 1400
       ) {
         col.width = width;
@@ -57,9 +57,7 @@ export default (_cols, { resizeCallback }) => {
     mouseDownPos.value = e.clientX;
 
     const mouseMoveEventListener = (e) => {
-      if (!col.mouseDown) {
-        return;
-      }
+      if (!col.mouseDown) return;
 
       col.width = null;
     };

@@ -107,6 +107,13 @@ const menu = computed(() => [
     name: "Заказы",
     icon: defineAsyncComponent(() => import("@/components/icon/Cart.vue")),
   },
+  {
+    link: {
+      name: "admin-chats",
+    },
+    name: "Чаты",
+    icon: defineAsyncComponent(() => import("@/components/icon/Cart.vue")),
+  },
 ]);
 </script>
 

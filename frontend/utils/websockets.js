@@ -8,43 +8,32 @@ import Pusher from "pusher-js";
 // PUSHER_PORT=6001
 // PUSHER_APP_CLUSTER=mt1
 
-export const initSocket = ({ window, config, accessToken }) => {
+export const initSocket = (window, accessToken) => {
   window.Pusher = Pusher;
 
   window.Echo = new Echo({
-    broadcaster: config.public.BROADCAST_DRIVER,
-    key: config.public.PUSHER_APP_KEY,
-    wsHost: config.public.HOST,
-    // wsHost: 'localhost',
-    wsPort: config.public.PUSHER_PORT,
-    cluster: config.public.PUSHER_APP_CLUSTER,
+    broadcaster: "pusher",
+    key: "app-key",
+    // wsHost: "92.63.179.235",
+    wsHost: "localhost",
+    // wsHost: "127.0.0.1",
+    wsPort: 6001,
+    cluster: "mt1",
     forceTLS: false,
     enabledTransports: ["ws", "wss"],
     auth: {
       headers: {
-        Authorization: "Bearer " + accessToken.value,
+        Authorization: "Bearer " + accessToken,
       },
     },
-    authEndpoint: `${config.public.BACK_URL}/broadcasting/auth`,
+    authEndpoint: "http://localhost/broadcasting/auth",
+    // authEndpoint: "http://127.0.0.1/broadcasting/auth",
+    // authEndpoint: "http://92.63.179.235/broadcasting/auth",
   });
 };
 
-export const socketListenAll = ({ window, user }) => {
-  window.Echo.private(`message.${user.value?.id}`).listen(
-    "Message",
-    (event) => {
-      // console.log(event);
-      // const { addMessage } = useTempMessage();
-
-      // addMessage(event?.data);
-      // if (event?.chat_id == userChatSelected.value?.chat_id) {
-      //   store.commit('createMessage', event);
-      // } else if (event?.user_id != me?.value?.user?.id) {
-      //   store.commit('addMessageIds', event?.chat_id);
-      //   store.commit('editChat', event);
-
-      //   store.dispatch('syncAddAlert', { alert: event, typeAlert: 'message' })
-      // }
-    }
-  );
+export const socketListenAll = (window, user, addMessage) => {
+  window.Echo.private(`message.${user?.id}`).listen("Message", (event) => {
+    addMessage(event?.data);
+  });
 };

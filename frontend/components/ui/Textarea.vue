@@ -6,6 +6,7 @@
     :rightIcon="rightIcon"
   >
     <textarea
+      :="$attrs"
       class="control__textarea"
       v-maska
       :data-maska="maska"
@@ -17,8 +18,9 @@
           ($event.target as HTMLInputElement).value || undefined
         )
       "
+      ref="textarea"
       :value="modelValue"
-      rows="3"
+      :rows="rows"
     ></textarea>
   </UiControl>
 </template>
@@ -32,11 +34,11 @@ export interface FieldProps extends /* @vue-ignore */ TextareaHTMLAttributes {
   rightIcon?: any;
   message?: string;
   label?: string;
-  placeholder?: string;
   maska?: any;
   dataMaskReserved?: boolean;
   maskaTokens?: any;
   errorMessage?: string;
+  rows?: string | number;
 }
 
 interface Emits {
@@ -44,7 +46,27 @@ interface Emits {
 }
 
 defineEmits<Emits>();
-defineProps<FieldProps>();
+withDefaults(defineProps<FieldProps>(), { rows: 1 });
+
+const textarea = ref();
+
+const textareaResize = () => {
+  textarea.value.style.height = "auto";
+  textarea.value.style.height = textarea.value.scrollHeight + "px";
+};
+
+onMounted(() => {
+  textarea.value;
+
+  textarea.value.style.height = textarea.value.scrollHeight + "px";
+  textarea.value.style.overflowY = "hidden";
+
+  textarea.value.addEventListener("input", textareaResize);
+});
+
+onUnmounted(() => {
+  textarea.value?.removeEventListener("input", textareaResize);
+});
 </script>
 
 <style lang="scss" scoped>

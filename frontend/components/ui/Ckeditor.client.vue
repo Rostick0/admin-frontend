@@ -9,7 +9,7 @@
 
 <script lang="ts" setup>
 const ckedit = await import("@ckeditor/ckeditor5-vue").then(
-  (res) => res.default.component
+  (res) => res.Ckeditor
 );
 const ClassicEditor = await import("@ckeditor/ckeditor5-build-classic").then(
   (res) => res.default

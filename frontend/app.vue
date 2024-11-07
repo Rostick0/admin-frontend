@@ -40,8 +40,10 @@ configure({
   }),
 });
 
+const { addMessage } = useTempMessage();
+
 onMounted(() => {
-  initSocket({ window, config, accessToken });
-  socketListenAll({ window, user });
+  initSocket(window, accessToken.value);
+  socketListenAll(window, user.value, addMessage);
 });
 </script>
