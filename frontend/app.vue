@@ -46,11 +46,16 @@ configure({
   }),
 });
 
-const { addMessage } = useTempMessage();
+const { tempDataAdd: addMessage } = useTemp({
+  name: "tempMessages",
+});
+const { tempDataAdd: addNotice } = useTemp({
+  name: "tempNotices",
+});
 
 onMounted(() => {
   initSocket(window, accessToken.value);
-  socketListenAll(window, user.value, addMessage);
+  socketListenAll(window, user.value, { addMessage, addNotice });
 });
 </script>
 

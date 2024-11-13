@@ -32,8 +32,12 @@ export const initSocket = (window, accessToken) => {
   });
 };
 
-export const socketListenAll = (window, user, addMessage) => {
+export const socketListenAll = (window, user, { addMessage, addNotice }) => {
   window.Echo.private(`message.${user?.id}`).listen("Message", (event) => {
     addMessage(event?.data);
+  });
+
+  window.Echo.private(`notice.${user?.id}`).listen("Notice", (event) => {
+    addNotice(event?.data);
   });
 };

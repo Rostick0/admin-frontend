@@ -53,7 +53,12 @@
           </button>
         </template>
         <template #drop>
-          <LazyNoticePopup />
+          <LazyNoticePopup
+            :notices="data"
+            :isInitNotices="isInitNotices"
+            :fetchNotices="get"
+            @setInit="(val) => (isInitNotices = val)"
+          />
         </template>
       </UiDropdownMenuSecond>
       <NuxtLink class="header__icon" to="/admin/chats">
@@ -93,7 +98,29 @@
 </template>
 
 <script setup>
+import last from "lodash/last";
 const router = useRouter();
+
+const isInitNotices = ref(false);
+const { data, get } = await useApi({
+  name: "notices.getAll",
+  params: {
+    sort: "id",
+    limit: 5,
+  },
+});
+
+const tempNotices = useState("tempNotices");
+
+watch(
+  () => tempNotices.value?.length,
+  (cur, pre) => {
+    if (cur <= pre) return;
+
+    infoToast("У вас новое уведомление!");
+    data.value = [last(tempNotices.value), ...[...data.value].slice(0, 4)];
+  }
+);
 </script>
 
 <style lang="scss" scoped>

@@ -74,6 +74,14 @@ export const success = (message = "Данные успешно сохранен�
   }
 };
 
+export const infoToast = (message = "Данные успешно сохранены") => {
+  try {
+    toast.info(message, 2000);
+  } catch (error) {
+    console.error(error);
+  }
+};
+
 export const checkSaved = (resp, callback, message = null, errorCallback) => {
   try {
     if (

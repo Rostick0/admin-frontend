@@ -1,6 +1,6 @@
 <template>
   <div class="notice-popup">
-    <NoticeList :notices="data" />
+    <NoticeList :notices="notices" />
     <NuxtLink class="d-flex" to="/admin/notices">
       <UiButton class="notice-popup__more">Посмотреть все</UiButton>
     </NuxtLink>
@@ -8,13 +8,21 @@
 </template>
 
 <script setup>
-const { data } = await useApi({
-  name: "notices.getAll",
-  params: {
-    sort: "id",
-    limit: 5,
-  },
-  init: true,
+const props = defineProps({
+  notices: Array,
+  isInitNotices: Boolean,
+  fetchNotices: Function,
+});
+
+const emits = defineEmits(["setInit"]);
+
+onMounted(async () => {
+  if (props.isInitNotices) return;
+  
+  await props?.fetchNotices();
+  console.log(props)
+
+  emits("setInit", true);
 });
 </script>
 
