@@ -5,6 +5,13 @@
 </template>
 
 <script setup>
+await import("moment/dist/locale/ru");
+
+await import("font-awesome/scss/font-awesome.scss");
+// await import("font-awesome/fonts/");
+// await import("font-awesome/css/font-awesome.min.css");
+// await import("font-awesome/package.json");
+
 const { configure, defineRule } = await import("vee-validate");
 const { email, min, max, required, size, image, min_value, max_value } =
   await import("@vee-validate/rules");
@@ -15,7 +22,6 @@ const { accessToken, user, getUser } = await useAuth();
 if (true || (accessToken.value && !user.value)) {
   await getUser();
 }
-const config = useRuntimeConfig();
 
 defineRule("required", required);
 defineRule("email", email);
@@ -47,3 +53,21 @@ onMounted(() => {
   socketListenAll(window, user.value, addMessage);
 });
 </script>
+
+<style lang="scss">
+// .fa {
+//   display: inline-block;
+//   font: normal normal normal 14px/1 FontAwesome;
+//   font-size: inherit;
+//   text-rendering: auto;
+//   -webkit-font-smoothing: antialiased;
+//   -moz-osx-font-smoothing: grayscale;
+// }
+// importing core styling file
+// @import "font-awesome/scss/font-awesome.scss";
+
+// // our project needs Classic Solid, Brands, and Sharp Solid
+// @import './fontawesome/scss/solid.scss';
+// @import './fontawesome/scss/brands.scss';
+// @import './fontawesome/scss/sharp-solid.scss';
+</style>

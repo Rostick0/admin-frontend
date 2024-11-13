@@ -101,18 +101,6 @@ function objNotEmpty(obj) {
   return !!Object.keys(obj).length;
 }
 
-function uniqueId() {
-  var idstr = String.fromCharCode(Math.floor(Math.random() * 25 + 65));
-  do {
-    var ascicode = Math.floor(Math.random() * 42 + 48);
-    if (ascicode < 58 || ascicode > 64) {
-      idstr += String.fromCharCode(ascicode);
-    }
-  } while (idstr.length < 32);
-
-  return idstr;
-}
-
 const isObject = (obj) => obj && typeof obj == "object" && !Array?.isArray(obj);
 
 const isArray = (obj) => obj && typeof obj == "object" && Array?.isArray(obj);
@@ -284,28 +272,6 @@ export function setProperty(obj, path, value) {
   }
 }
 
-function debounce(func, wait, immediate) {
-  let timeout;
-
-  return function executedFunction() {
-    const context = this;
-    const args = arguments;
-
-    const later = function () {
-      timeout = null;
-      if (!immediate) func.apply(context, args);
-    };
-
-    const callNow = immediate && !timeout;
-
-    clearTimeout(timeout);
-
-    timeout = setTimeout(later, wait);
-
-    if (callNow) func.apply(context, args);
-  };
-}
-
 export const getByString = (obj, name) => {
   try {
     let pre = obj;
@@ -320,17 +286,15 @@ export const getByString = (obj, name) => {
   }
 };
 
-function declination(number, titles = [" год", " года", " лет"]) {
+export const declination = (number, titles = [" год", " года", " лет"]) => {
   const cases = [2, 0, 1, 1, 1, 2];
   return titles[
     number % 100 > 4 && number % 100 < 20
       ? 2
       : cases[number % 10 < 5 ? number % 10 : 5]
   ];
-}
-const log = (...all) => {
-  console.error(...all);
 };
+const log = (...all) => console.error(...all);
 
 export const statusViews = ["publish", "pending", "draft", "future"];
 export const statusViewsOptions = statusViews.map((name) => ({
@@ -357,23 +321,30 @@ export const propertyTypesOptions = propertyTypes.map((name) => ({
   name,
 }));
 
+export const noticeTypes = {
+  success: "success",
+  error: "error",
+  nullable: null,
+};
+
+export const regexLink = /(https?:\/\/[^\s]+)/g;
+
+export const setLinkInText = (str) =>
+  str?.replace(
+    regexLink,
+    (url) => `<a href="${url}" target="_blank">${url}</a>`
+  );
+
 const Utils = {
   log,
-  declination,
-  debounce,
   isArray,
   isObject,
-  uniqueId,
-  checkSaved,
   objNotEmpty,
   cloneDeep,
   setProperty,
   sliceChunks,
   getProperty,
-  warningPopup,
   getErrorData,
-  notify,
-  success,
 };
 
 export default Utils;

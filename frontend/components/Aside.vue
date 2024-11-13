@@ -121,7 +121,7 @@ const menu = computed(() => [
 .aside {
   background-color: rgb(var(--color-white));
   position: relative;
-  z-index: 2;
+  z-index: 1;
 
   &-top {
     background-color: rgb(var(--color-blue-light));
