@@ -4,6 +4,7 @@ import chats from "./modules/chats";
 import file from "./modules/file";
 import image from "./modules/image";
 import messages from "./modules/messages";
+import notices from "./modules/notices";
 import orderingProducts from "./modules/orderingProducts";
 import orderings from "./modules/orderings";
 import posts from "./modules/posts";
@@ -15,6 +16,7 @@ import propertyCategories from "./modules/propertyCategories";
 import rubrics from "./modules/rubrics";
 import slides from "./modules/slides";
 import statisticDays from "./modules/statisticDays";
+import uploader from "./modules/uploader";
 import vendors from "./modules/vendors";
 
 export default {
@@ -24,6 +26,7 @@ export default {
   file,
   image,
   messages,
+  notices,
   orderingProducts,
   orderings,
   posts,
@@ -35,5 +38,6 @@ export default {
   rubrics,
   slides,
   statisticDays,
+  uploader,
   vendors,
 };

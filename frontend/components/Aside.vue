@@ -46,6 +46,13 @@ const menu = computed(() => [
   },
   {
     link: {
+      name: "admin-uploader",
+    },
+    name: "Загрузка",
+    icon: defineAsyncComponent(() => import("@/components/icon/Product.vue")),
+  },
+  {
+    link: {
       name: "admin-properties",
     },
     name: "Свойства",
@@ -105,13 +112,6 @@ const menu = computed(() => [
       name: "admin-orderings",
     },
     name: "Заказы",
-    icon: defineAsyncComponent(() => import("@/components/icon/Cart.vue")),
-  },
-  {
-    link: {
-      name: "admin-chats",
-    },
-    name: "Чаты",
     icon: defineAsyncComponent(() => import("@/components/icon/Cart.vue")),
   },
 ]);

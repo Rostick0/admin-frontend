@@ -49,7 +49,7 @@
           </g>
         </svg>
       </a>
-      <a class="header__icon" href="#">
+      <NuxtLink class="header__icon" to="/admin/chats">
         <svg
           class="svg-stroke"
           stroke="rgb(var(--color-white))"
@@ -66,7 +66,7 @@
             stroke-linejoin="round"
           />
         </svg>
-      </a>
+      </NuxtLink>
       <a class="header__icon header__setting" href="#">
         <svg
           class="svg-fill"
@@ -83,6 +83,8 @@
       </a>
     </div>
   </header>
+
+  
 </template>
 
 <script setup>
