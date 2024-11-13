@@ -1,27 +1,39 @@
 <template>
-  <div class="dropdown" @click="$emit('click')">
-    <div class="dropdown-menu-button" @click="isShow = !isShow">
+  <div
+    class="dropdown"
+    @click="$emit('click')"
+    tabindex="-1"
+    @focusout="onFocusout"
+    ref="wrapper"
+  >
+    <div class="dropdown-menu-button" @click="isOpened = !isOpened">
       <slot name="body" />
     </div>
     <div
       class="dropdown-menu"
       :style="position ? `${position}:0;` : ''"
-      v-if="isShow"
+      v-if="isOpened"
     >
-      <slot name="drop" :close="() => (isShow = !isShow)"></slot>
+      <slot name="drop" :close="() => (isOpened = !isOpened)"></slot>
     </div>
   </div>
 </template>
 <script setup lang="ts">
-const isShow = ref(false);
-
 interface Props {
-  isShow?: boolean;
+  isOpened?: boolean;
   position?: "left" | "right" | "top" | "bottom";
 }
 
 defineEmits(["click"]);
 defineProps<Props>();
+
+const wrapper = ref();
+
+const isOpened = ref(false);
+
+const onFocusout = (e: any) => {
+  if (!wrapper?.value?.contains(e?.relatedTarget)) isOpened.value = false;
+};
 </script>
 
 <style lang="scss" scoped>

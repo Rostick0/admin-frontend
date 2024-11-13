@@ -29,7 +29,7 @@ const { data, meta } = await useApi({
   init: true,
   params: {
     sort: "id",
-    limit: 5,
+    limit: 10,
   },
 });
 </script>

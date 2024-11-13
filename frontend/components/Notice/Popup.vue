@@ -23,6 +23,7 @@ const { data } = await useApi({
   background-color: rgb(var(--color-white));
   border-radius: 0.33rem;
   padding: 0.75rem;
+  margin-top: 12px;
   margin-right: 16px;
   max-width: 500px;
 
