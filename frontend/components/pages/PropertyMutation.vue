@@ -12,6 +12,7 @@
             <UiStack flex-direction="column" gap="3">
               <VFormComponent :field="name" />
               <VFormComponent :field="is_top" />
+              <VFormComponent :field="is_filter" />
               <VFormComponent :field="type" />
               <VFormComponent :field="unit" />
               <VFormComponent :field="property_type" />
@@ -58,6 +59,16 @@ const is_top = ref({
 
   bind: {
     title: "Показывать сверху",
+  },
+});
+
+const is_filter = ref({
+  type: "switch",
+  name: "is_filter",
+  modelValue: data?.is_filter,
+
+  bind: {
+    title: "Показывать при фильтрации",
   },
 });
 
