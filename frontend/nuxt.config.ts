@@ -36,4 +36,9 @@ export default defineNuxtConfig({
   },
 
   devtools: { enabled: true },
+
+  ssr: false,
+  nitro: {
+    preset: "static", // Указываем, что хотим получить статику
+  },
 });

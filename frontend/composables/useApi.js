@@ -7,7 +7,6 @@
 @callback  - функция срабатывает послк получения данных
 @popup вывести алерт при ошибке
 */
-import uniqueId from "lodash/uniqueId";
 import Utils, { formatObjectReverse, mergeObjectsData } from "~/utils/base";
 
 import api from "~/api";
@@ -27,7 +26,7 @@ const useApi = async ({
   popup = true,
 } = {}) => {
   try {
-    const id = uniqueId();
+    const id = useId();
     const data = useState(`data-${id}`, () => null);
     const loading = useState(`loading-${id}`, () => false);
     const error = useState(`error-${id}`, () => false);

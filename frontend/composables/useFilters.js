@@ -1,4 +1,3 @@
-import uniqueId from "lodash/uniqueId";
 import debounce from "lodash/debounce";
 import cloneDeep from "lodash/cloneDeep";
 import pickBy from "lodash/pickBy";
@@ -9,7 +8,7 @@ export default ({
   withInitQueryParams = false,
   debounceMs = 500,
 } = {}) => {
-  const id = uniqueId();
+  const id = useId();
   const router = useRouter();
   const filters = useState("filters-" + id, () => initialFilters);
 

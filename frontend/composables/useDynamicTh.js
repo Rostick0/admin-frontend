@@ -1,8 +1,6 @@
-import { v4 } from "uuid";
-
 export default (_cols, { resizeCallback }) => {
-  const table = useState(v4(), () => null);
-  const cols = useState(v4(), () => []);
+  const table = useState(useId(), () => null);
+  const cols = useState(useId(), () => []);
 
   const mouseDownPos = ref();
 
@@ -18,7 +16,7 @@ export default (_cols, { resizeCallback }) => {
 
     const mouseMoveEventListener = (e) => {
       if (!col.mouseDown) return;
-      
+
       const width = col.mouseDownWidth + (e.clientX - mouseDownPos.value);
       if (
         width > 80 &&
